@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "test": "node --harmony `which gulp` test-once"
   },
   "dependencies": {
     "express": "~4.10.6",
@@ -16,7 +17,10 @@
     "node-compass": "0.2.3"
   },
   "devDependencies": {
+    "chai": "^1.10.0",
     "gulp": "^3.8.10",
+    "gulp-exit": "0.0.2",
+    "gulp-mocha": "^2.0.0",
     "mocha": "^2.1.0"
   }
 }
