@@ -53,3 +53,7 @@ Temporary Items
 .apdisk
 
 node_modules
+
+# Express
+public/.sass-cache
+public/stylesheets/*.css
