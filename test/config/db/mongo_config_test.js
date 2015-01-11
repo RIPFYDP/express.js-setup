@@ -1,6 +1,5 @@
-var assert      = require('assert'),
-    chai        = require('chai'),
-    expect      = chai.expect;
+var chai        = require('chai'),
+    expect      = chai.expect,
     mongoConfig = require('../../../config/db/mongo_config');
 
 describe('config/db/mongo_config', function() {
