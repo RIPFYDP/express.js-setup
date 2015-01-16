@@ -6,13 +6,13 @@ var express      = require('express'),
     bodyParser   = require('body-parser'),
     _            = require('lodash'),
     swig         = require('swig'),
-    routes       = require('./config/application/routes'),
+    routes       = require('./config/application/routes_config'),
     app          = express();
 
 // view engine setup
 app.engine('html', swig.renderFile);
 
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, 'app/views'));
 app.set('view engine', 'html');
 
 // Swig will cache templates for you, but you can disable

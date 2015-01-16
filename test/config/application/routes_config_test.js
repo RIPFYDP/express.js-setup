@@ -1,7 +1,7 @@
 var chai         = require('chai'),
     expect       = chai.expect,
     _            = require('lodash'),
-    routesConfig = require('../../../config/application/routes');
+    routesConfig = require('../../../config/application/routes_config');
 
 describe('config/application/routes', function() {
   it('should export an array', function() {

@@ -1,5 +1,5 @@
-var indexRoutes = require('../../routes/index'),
-    usersRoutes = require('../../routes/users'),
+var indexRoutes = require('./routes/index'),
+    usersRoutes = require('./routes/users'),
     routes      = [];
 
 routes = [
