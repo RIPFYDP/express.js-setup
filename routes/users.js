@@ -7,6 +7,7 @@ router.get('/', function(req, res) {
       options = {};
 
   options = {
+    title:     'This is users page',
     firstName: 'Jason',
     lastName: 'Kim'
   };
