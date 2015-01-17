@@ -1,5 +1,6 @@
 var express = require('express');
-var router = express.Router();
+    router  = express.Router(),
+    User    = require('../models/user');
 
 /* GET users listing. */
 router.get('/', function(req, res) {
@@ -9,7 +10,8 @@ router.get('/', function(req, res) {
   options = {
     title:     'This is users page',
     firstName: 'Jason',
-    lastName: 'Kim'
+    lastName: 'Kim',
+    users: User.all()
   };
 
   res.render(template, options);
