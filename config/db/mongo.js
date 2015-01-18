@@ -1,34 +1,27 @@
 var mongo       = require('mongodb'),
     mongoConfig = require('./mongo_config'),
     test        = require('assert'),
+    async       = require('async'),
+    _           = require('lodash'),
     MongoClient = mongo.MongoClient,
     _db,
-    mongo;
+    Mongo;
 
-mongo = {
-  connect: function(callback) {
-    MongoClient.connect(mongoConfig.development.url, function(err, docs) {
-      test.equal(null, err);
+Mongo = function() {};
 
-      _db = docs;
+Mongo.prototype.connect = function(options, callback) {
+  var self = this,
+      url = mongoConfig.development.url;
 
-      if (callback) {
-        return callback(err);
-      }
-    });
-  },
+  MongoClient.connect(url, options, function(err, db) {
+    test.equal(null, err);
 
-  db: function() {
-    return _db;
-  },
+    self.db = db;
 
-  close: function() {
-    _db.close();
-  }
+    if (callback) {
+      callback();
+    }
+  });
 };
 
-mongo.db = function() {
-  return _db;
-}
-
-module.exports = mongo;
+module.exports = Mongo;
