@@ -4,9 +4,20 @@
  * Module dependencies.
  */
 
-var app = require('../app');
-var debug = require('debug')('express-js-setup:server');
-var http = require('http');
+var app           = require('../app'),
+    debug         = require('debug')('express-js-setup:server'),
+    http          = require('http'),
+    globalLibrary = require('../config/application/global_library'),
+    Mongo         = require('../config/db/mongo');
+
+// Create mongo instance
+
+var mongo = new Mongo(),
+    mongoOptions = {
+      server: {
+        poolSize: 1
+      }
+    };
 
 /**
  * Get port from environment and store in Express.
@@ -25,7 +36,10 @@ var server = http.createServer(app);
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port);
+mongo.connect(mongoOptions, function(){
+  globalLibrary = mongo.db;
+  server.listen(port);
+});
 server.on('error', onError);
 server.on('listening', onListening);
 

@@ -1,6 +1,8 @@
-var express = require('express');
-    router  = express.Router(),
-    User    = require('../models/user');
+var express       = require('express');
+    router        = express.Router(),
+    globalLibrary = require('../../config/application/global_library'),
+    User          = require('../models/user'),
+    db            = globalLibrary.db;
 
 /* GET users listing. */
 router.get('/', function(req, res) {
@@ -13,6 +15,7 @@ router.get('/', function(req, res) {
     lastName: 'Kim',
     users: User.all()
   };
+  console.log(db);
 
   res.render(template, options);
 });
