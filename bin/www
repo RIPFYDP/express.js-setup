@@ -24,6 +24,7 @@ var mongo = new Mongo(),
  */
 
 var port = parseInt(process.env.PORT, 10) || 3000;
+
 app.set('port', port);
 
 /**
