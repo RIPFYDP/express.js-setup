@@ -15,7 +15,6 @@ router.get('/', function(req, res) {
     lastName: 'Kim',
     users: User.all()
   };
-  console.log(db);
 
   res.render(template, options);
 });

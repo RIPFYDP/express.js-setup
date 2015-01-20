@@ -23,7 +23,7 @@ before(function(done) {
 
   server = http.createServer(app);
   mongo.connect(mongoOptions, function(){
-    globalLibrary = mongo.db;
+    globalLibrary.db = mongo.db;
     server.listen(port);
     done();
   });
@@ -33,9 +33,9 @@ before(function(done) {
 describe('app/models/user', function() {
   it('.all', function() {
     var users = User.all();
-
+    console.log(users);
     // mongo.db is now available.
-    // console.log(mongo.db);
+    // console.log(globalLibrary.db);
 
     expect(users).to.be.a('Array');
   });
