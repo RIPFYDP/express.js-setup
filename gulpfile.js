@@ -23,7 +23,7 @@ gulp.task('test-once', function() {
 
 gulp.task('lint', function() {
   return gulp.src(['./app.js', './config/**/*.js', './test/**/*',
-    'routes/*.js'])
+    'app/**/*.js'])
   .pipe(jshint())
   .pipe(jshint.reporter(stylish));
 });

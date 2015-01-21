@@ -38,7 +38,7 @@ var server = http.createServer(app);
  */
 
 mongo.connect(mongoOptions, function(){
-  globalLibrary = mongo.db;
+  globalLibrary.db = mongo.db;
   server.listen(port);
 });
 server.on('error', onError);

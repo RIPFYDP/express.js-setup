@@ -32,11 +32,14 @@ before(function(done) {
 
 describe('app/models/user', function() {
   it('.all', function() {
-    var users = User.all();
-    console.log(users);
-    // mongo.db is now available.
-    // console.log(globalLibrary.db);
 
-    expect(users).to.be.a('Array');
+    User.all()
+    .then(function (docs) {
+      expect(docs).to.be.a('Array');
+      expect(docs[0]).to.be.a('Object');
+    }, function(error) {
+    }, function(progress) {
+    });
+
   });
 });

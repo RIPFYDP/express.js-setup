@@ -1,21 +1,24 @@
-var globalLibrary = require('../../config/application/global_library'),
-    test          = require('assert'),
+var async         = require('async'),
+    Q             = require('q'),
+    globalLibrary = require('../../config/application/global_library'),
+    users,
     User;
 
 User = {
   all: function() {
-    var users;
-
-    users = [];
+    var deferred = Q.defer();
 
     globalLibrary.db.collection('users').find({}).toArray(function(err, items) {
-      test.equal(null, err);
 
-      users = items;
+      if (err) {
+        deferred.reject(new Error(err));
+      } else {
+        deferred.resolve(items);
+      }
     });
 
-    return users;
+    return deferred.promise;
   }
-}
+};
 
 module.exports = User;
