@@ -6,18 +6,7 @@
 
 var app           = require('../app'),
     debug         = require('debug')('express-js-setup:server'),
-    http          = require('http'),
-    globalLibrary = require('../config/application/global_library'),
-    Mongo         = require('../config/db/mongo');
-
-// Create mongo instance
-
-var mongo = new Mongo(),
-    mongoOptions = {
-      server: {
-        poolSize: 1
-      }
-    };
+    http          = require('http');
 
 /**
  * Get port from environment and store in Express.
@@ -37,10 +26,7 @@ var server = http.createServer(app);
  * Listen on provided port, on all network interfaces.
  */
 
-mongo.connect(mongoOptions, function(){
-  globalLibrary.db = mongo.db;
-  server.listen(port);
-});
+server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 

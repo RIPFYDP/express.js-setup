@@ -1,13 +1,14 @@
-var express      = require('express'),
-    path         = require('path'),
-    favicon      = require('serve-favicon'),
-    logger       = require('morgan'),
-    cookieParser = require('cookie-parser'),
-    bodyParser   = require('body-parser'),
-    _            = require('lodash'),
-    swig         = require('swig'),
-    routes       = require('./config/application/routes_config'),
-    app          = express();
+var express        = require('express'),
+    path           = require('path'),
+    favicon        = require('serve-favicon'),
+    logger         = require('morgan'),
+    cookieParser   = require('cookie-parser'),
+    bodyParser     = require('body-parser'),
+    _              = require('lodash'),
+    swig           = require('swig'),
+    routes         = require('./config/application/routes_config'),
+    mongoConnector = require('./config/db/mongo_connector'),
+    app            = express();
 
 // view engine setup
 app.engine('html', swig.renderFile);
@@ -68,5 +69,7 @@ app.use(function(err, req, res, next) {
     });
 });
 
+// init mongodb connection
+mongoConnector.init();
 
 module.exports = app;

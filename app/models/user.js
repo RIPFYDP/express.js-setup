@@ -1,5 +1,4 @@
-var async         = require('async'),
-    Q             = require('q'),
+var Q             = require('q'),
     globalLibrary = require('../../config/application/global_library'),
     users,
     User;
