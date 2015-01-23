@@ -12,14 +12,14 @@ router.get('/', function(req, res) {
   res.render('application/index', options);
 });
 
-router.get('/log_in', function(req, res) {
+router.get('/sign_in', function(req, res) {
   var options;
 
   options = {
-    title: 'Log in'
+    title: 'Sign in'
   };
 
-  res.render('users/log_in', options);
+  res.render('users/sign_in', options);
 });
 
 router.get('/sign_up', function(req, res) {
