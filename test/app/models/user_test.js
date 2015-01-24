@@ -26,8 +26,8 @@ before(function(done) {
 });
 
 describe('app/models/user', function() {
-  it('.all', function(done) {
 
+  it('.all', function(done) {
     User.all()
     .then(
     function (docs) {
@@ -38,6 +38,28 @@ describe('app/models/user', function() {
     function(error) {},
     function(progress) {}
     );
-
   });
+
+  it('#save', function(done) {
+    var options = {
+      username: 'jasoki',
+      password: 'passwordy'
+    };
+    var user = new User(options);
+
+    user.save()
+    .then(
+      function(docs) {
+        expect(docs).to.be.a('Array');
+        expect(docs[0]).to.be.a('Object');
+        expect(docs[0]).to.have.property('_id');
+        expect(docs[0].username).to.be.equal(options.username);
+        expect(docs[0].password).to.be.equal(options.password);
+        done();
+      },
+      function(error) {},
+      function(progress) {}
+    );
+  });
+
 });

@@ -3,21 +3,47 @@ var Q             = require('q'),
     users,
     User;
 
-User = {
-  all: function() {
-    var deferred = Q.defer();
+User = function(options) {
+  this.username = options.username;
+  this.password = options.password;
+};
 
-    globalLibrary.db.collection('users').find({}).toArray(function(err, items) {
+// Class methods
 
-      if (err) {
-        deferred.reject(new Error(err));
-      } else {
-        deferred.resolve(items);
-      }
-    });
+User.all = function() {
+  var deferred = Q.defer();
 
-    return deferred.promise;
-  }
+  globalLibrary.db.collection('users').find({}).toArray(function(err, items) {
+
+    if (err) {
+      deferred.reject(new Error(err));
+    } else {
+      deferred.resolve(items);
+    }
+  });
+
+  return deferred.promise;
+};
+
+// Instnce methods
+
+User.prototype.save = function() {
+  var deferred = Q.defer(),
+      options  = {
+        username: this.username,
+        password: this.password
+      };
+
+  globalLibrary.db.collection('users').insert(options, function(err, items) {
+
+    if (err) {
+      deferred.reject(new Error(err));
+    } else {
+      deferred.resolve(items);
+    }
+  });
+
+  return deferred.promise;
 };
 
 module.exports = User;
