@@ -1,6 +1,7 @@
 var chai           = require('chai'),
     expect         = chai.expect,
     _              = require('lodash'),
+    faker          = require('faker'),
     Q              = require('q'),
     Mongo          = require('../../../config/db/mongo'),
     deferred       = Q.defer(),
@@ -42,8 +43,8 @@ describe('app/models/user', function() {
 
   it('#save', function(done) {
     var options = {
-      username: 'jasoki',
-      password: 'passwordy'
+      username: faker.internet.userName(),
+      password: faker.internet.password()
     };
     var user = new User(options);
 
