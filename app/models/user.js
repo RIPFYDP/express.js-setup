@@ -10,6 +10,7 @@ User = function(options) {
 
 // Class methods
 
+// Return all users in an array.
 User.all = function() {
   var deferred = Q.defer();
 
@@ -18,6 +19,27 @@ User.all = function() {
     if (err) {
       deferred.reject(new Error(err));
     } else {
+      deferred.resolve(items);
+    }
+  });
+
+  return deferred.promise;
+};
+
+// Find all users with options.
+User.find = function(options) {
+  var deferred = Q.defer();
+
+  globalLibrary.db.collection('users').find(options).toArray(function(err, items) {
+
+    if (err) {
+      deferred.reject(new Error(err));
+    } else {
+
+      if (items.length === 1) {
+        items = items[0];
+      }
+
       deferred.resolve(items);
     }
   });

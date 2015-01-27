@@ -31,13 +31,31 @@ describe('app/models/user', function() {
   it('.all', function(done) {
     User.all()
     .then(
-    function (docs) {
-      expect(docs).to.be.a('Array');
-      expect(docs[0]).to.be.a('Object');
-      done();
-    },
-    function(error) {},
-    function(progress) {}
+      function (docs) {
+        expect(docs).to.be.a('Array');
+        expect(docs[0]).to.be.a('Object');
+        done();
+      },
+      function(error) {},
+      function(progress) {}
+    );
+  });
+
+  it('.find', function(done) {
+    var user;
+    User.all()
+    .then(
+      function(docs) {
+        user = docs[0];
+        return User.find({username: user.username});
+      }
+    )
+    .then(
+      function(docs) {
+        expect(docs).to.be.a('Object');
+        expect(docs.username).to.be.equal(user.username);
+        done();
+      }
     );
   });
 
