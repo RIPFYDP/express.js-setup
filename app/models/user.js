@@ -1,11 +1,11 @@
 var Q             = require('q'),
+    attributa     = require('attributa'),
     globalLibrary = require('../../config/application/global_library'),
     users,
     User;
 
 User = function(options) {
-  this.username = options.username;
-  this.password = options.password;
+  attributa.assign(this, options);
 };
 
 // Class methods
