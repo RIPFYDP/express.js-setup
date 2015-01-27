@@ -8,6 +8,7 @@ var express        = require('express'),
     swig           = require('swig'),
     routes         = require('./config/application/routes_config'),
     mongoConnector = require('./config/db/mongo_connector'),
+    passport       = require('passport'),
     app            = express();
 
 // view engine setup
@@ -32,6 +33,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(require('node-compass')({mode: 'expanded'}));
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Use passport
+var passportConfig = require('./config/application/passport_config');
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Initialize routes
 _.each(routes, function(route) {

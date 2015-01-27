@@ -1,7 +1,9 @@
-var express       = require('express'),
-    router        = express.Router(),
-    Q             = require('q'),
-    User          = require('../models/user');
+var express        = require('express'),
+    router         = express.Router(),
+    Q              = require('q'),
+    passport       = require('passport'),
+    User           = require('../models/user'),
+    passportConfig = require('../../config/application/passport_config');
 
 /* GET users listing. */
 router.get('/', function(req, res) {
@@ -11,9 +13,8 @@ router.get('/', function(req, res) {
   options = {
     title:     'This is users page',
     firstName: 'Jason',
-    lastName: 'Kim'
+    lastName:  'Kim'
   };
-
   User.all()
   .then(function (docs) {
     options.users = docs;
@@ -23,5 +24,13 @@ router.get('/', function(req, res) {
   }, function(progress) {
   });
 });
+
+router.post('/sign_in',
+  function(req, res) {
+    passport.authenticate('local', function(err, user, info) {
+      return res.redirect('/sign_in');
+    })(req, res);
+  }
+);
 
 module.exports = router;
