@@ -14,6 +14,10 @@
 
 Go to [http://localhost:3000/](http://localhost:3000/).
 
+## To run the tests
+
+`$ npm test`
+
 ## Running jake tasks
 
 Install `jake` globally.
