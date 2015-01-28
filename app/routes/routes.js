@@ -9,5 +9,6 @@ router.get('/sign_in', usersController.signIn);
 router.get('/sign_up', usersController.signUp);
 router.get('/users', usersController.index);
 router.post('/users/sign_in', usersController.signInPost);
+router.post('/users/sign_up', usersController.signUpPost);
 
 module.exports = router;

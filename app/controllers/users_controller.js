@@ -51,6 +51,9 @@ var usersController = {
     passport.authenticate('local', function(err, user, info) {
       return res.redirect('/sign_in');
     })(req, res);
+  },
+
+  signUpPost: function(req, res) {
   }
 };
 
