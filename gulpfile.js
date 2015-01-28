@@ -1,9 +1,11 @@
-var gulp    = require('gulp'),
-    mocha   = require('gulp-mocha'),
-    nodemon = require('gulp-nodemon'),
-    exit    = require('gulp-exit'),
-    jshint  = require('gulp-jshint'),
-    stylish = require('jshint-stylish');
+var gulp        = require('gulp'),
+    mocha       = require('gulp-mocha'),
+    nodemon     = require('gulp-nodemon'),
+    exit        = require('gulp-exit'),
+    jshint      = require('gulp-jshint'),
+    shell       = require('gulp-shell'),
+    runSequence = require('run-sequence'),
+    stylish     = require('jshint-stylish');
 
 gulp.task('default', function() {});
 
@@ -14,6 +16,15 @@ gulp.task('nodemon', function() {
     script: 'bin/www',
   }).on('restart');
 });
+
+gulp.task('test-complete', function(callback) {
+  runSequence('jake-prepopulate', 'test-once',
+  callback);
+});
+
+gulp.task('jake-prepopulate', shell.task([
+'jake db:drop',
+'jake db:seed']));
 
 gulp.task('test-once', function() {
   return gulp.src('test/**/**/*.js', {read: false})
