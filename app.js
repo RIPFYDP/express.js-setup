@@ -4,9 +4,7 @@ var express        = require('express'),
     logger         = require('morgan'),
     cookieParser   = require('cookie-parser'),
     bodyParser     = require('body-parser'),
-    _              = require('lodash'),
     swig           = require('swig'),
-    routes         = require('./config/application/routes_config'),
     mongoConnector = require('./config/db/mongo_connector'),
     passport       = require('passport'),
     app            = express();
@@ -36,14 +34,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Use passport
 var passportConfig = require('./config/application/passport_config');
-
 app.use(passport.initialize());
 app.use(passport.session());
 
 // Initialize routes
-_.each(routes, function(route) {
-  app.use(route.base, route.router);
-});
+var router = require('./app/routes/routes.js');
+app.use('/', router);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
