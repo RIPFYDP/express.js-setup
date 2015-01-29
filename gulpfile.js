@@ -27,6 +27,7 @@ gulp.task('jake-prepopulate', shell.task([
 'jake db:seed']));
 
 gulp.task('test-once', function() {
+  process.env.NODE_ENV = 'test';
   return gulp.src('test/**/**/*.js', {read: false})
              .pipe(mocha({reporter: 'nyan'}))
              .pipe(exit());
