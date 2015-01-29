@@ -8,9 +8,10 @@ namespace('db', function() {
 
   desc('Drop database');
   task('drop', function() {
+    desc('Drop database');
+
     Mongo.connect(config.development.url, function(err, db) {
       assert.equal(null, err);
-      console.log("Connected correctly to server");
 
       db.dropDatabase(function(err, result) {
         assert.equal(null, err);
@@ -60,7 +61,6 @@ namespace('db', function() {
     // Connect to the database
     Mongo.connect(config.development.url, function(err, db) {
       assert.equal(null, err);
-      console.log("Connected correctly to server");
 
       // Create users collection
       db.createCollection('users', {}, function(err, collection) {
