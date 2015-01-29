@@ -14,7 +14,7 @@ Mongo = function() {};
 Mongo.prototype.connect = function(options) {
   var self     = this,
       deferred = Q.defer(),
-      url      = mongoConfig.development.url;
+      url      = mongoConfig[process.env.NODE_ENV].url;
 
   options = (options === undefined) ? {} : options;
 

@@ -10,37 +10,40 @@ namespace('db', function() {
   task('drop', function() {
     desc('Drop database');
 
-    Mongo.connect(config.development.url, function(err, db) {
-      assert.equal(null, err);
-
-      db.dropDatabase(function(err, result) {
+    if (process.env.NODE_ENV === 'development'
+      || process.env.NODE_ENV === 'test') {
+      Mongo.connect(config[process.env.NODE_ENV].url, function(err, db) {
         assert.equal(null, err);
 
-        // Wait to seconds to let it replicate across
-        setTimeout(function() {
+        db.dropDatabase(function(err, result) {
+          assert.equal(null, err);
 
-          // Get the admin database
-          db.admin().listDatabases(function(err, dbs) {
+          // Wait to seconds to let it replicate across
+          setTimeout(function() {
 
-            // Grab the databases
-            dbs = dbs.databases;
+            // Get the admin database
+            db.admin().listDatabases(function(err, dbs) {
 
-            // Did we find the db
-            var found = false;
+              // Grab the databases
+              dbs = dbs.databases;
 
-            // Check if we have the db in the list
-            for (var i = 0; i < dbs.length; i++) {
-              if (dbs[i].name === config.development.name) {
-                found = true;
+              // Did we find the db
+              var found = false;
+
+              // Check if we have the db in the list
+              for (var i = 0; i < dbs.length; i++) {
+                if (dbs[i].name === config.development.name) {
+                  found = true;
+                }
               }
-            }
 
-            db.close();
-          });
-        }, 2000);
+              db.close();
+            });
+          }, 2000);
+        });
       });
+    }
 
-    });
   });
 
   desc('Seed database');
@@ -58,21 +61,25 @@ namespace('db', function() {
       });
     });
 
-    // Connect to the database
-    Mongo.connect(config.development.url, function(err, db) {
-      assert.equal(null, err);
+    if (process.env.NODE_ENV === 'development'
+      || process.env.NODE_ENV === 'test') {
 
-      // Create users collection
-      db.createCollection('users', {}, function(err, collection) {
+      // Connect to the database
+      Mongo.connect(config[process.env.NODE_ENV].url, function(err, db) {
         assert.equal(null, err);
 
-        // Insert users
-        collection.insert(users, function(err, result) {
+        // Create users collection
+        db.createCollection('users', {}, function(err, collection) {
           assert.equal(null, err);
 
-          db.close();
-        })
+          // Insert users
+          collection.insert(users, function(err, result) {
+            assert.equal(null, err);
+
+            db.close();
+          })
+        });
       });
-    });
+    }
   });
 });
