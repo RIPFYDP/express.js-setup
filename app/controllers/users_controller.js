@@ -1,4 +1,5 @@
-var Q              = require('q'),
+var _              = require('lodash'),
+    Q              = require('q'),
     passport       = require('passport'),
     User           = require('../models/user'),
     passportConfig = require('../../config/application/passport_config');
@@ -53,7 +54,89 @@ var usersController = {
     })(req, res);
   },
 
+  show: function(req, res) {
+    User.find({username: req.params.username})
+    .then(
+      function(docs) {
+        var options = {
+          title: 'Overview for ' + docs.username,
+          username: docs.username,
+          email: docs.email
+        };
+
+        return res.render('users/show', options);
+      },
+      function(error) {
+        // TODO: display 404
+      }
+    );
+  },
+
   signUpPost: function(req, res) {
+    // TODO: need error handling
+
+    var user = new User({
+      username: req.body.username,
+      email:    req.body.email,
+      password: req.body.password
+    });
+
+    User.find({username: user.username})
+    .then(
+      function(docs) {
+
+        if (_.isEmpty(docs)) {
+          return User.find({email: user.email});
+        } else {
+          throw new Error();
+        }
+      },
+      function(error) {
+        console.log(1);
+      }
+    )
+    .then(
+      function(docs) {
+
+        if (_.isEmpty(docs)) {
+          return user.save();
+        } else {
+          throw new Error();
+        }
+      },
+      function(error) {
+        // TODO: add title default
+        var options = {
+          alertType: 'danger',
+          alertMessage: 'Sorry, ' + user.username + ' is already taken.'
+        };
+        // TODO: change the url correctly
+        return res.render('users/sign_up', options);
+      }
+    )
+    .then(
+      function(docs) {
+        var options = {
+          alertType: 'success',
+          alertMessage: 'Thank you for signing up, ' + docs.username
+        };
+
+        return res.render('application/index', options);
+      },
+      function(error) {
+        // TODO: add title default
+        var options = {
+          alertType: 'danger',
+          alertMessage: 'Sorry, ' + user.email + ' is already used to sign up.'
+        };
+        // TODO: change the url correctly
+        console.log(res);
+        return res.render('users/sign_up', options);
+      }
+    )
+    .fail(function (error) {
+      // TODO: Error handling
+    });;
   }
 };
 

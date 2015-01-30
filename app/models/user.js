@@ -53,6 +53,7 @@ User.prototype.save = function() {
   var deferred = Q.defer(),
       options  = {
         username: this.username,
+        email   : this.email,
         password: this.password
       };
 
@@ -61,7 +62,7 @@ User.prototype.save = function() {
     if (err) {
       deferred.reject(new Error(err));
     } else {
-      deferred.resolve(items);
+      deferred.resolve(items[0]);
     }
   });
 

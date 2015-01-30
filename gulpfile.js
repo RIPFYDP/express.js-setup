@@ -12,6 +12,8 @@ gulp.task('default', function() {});
 gulp.task('server', ['nodemon']);
 
 gulp.task('nodemon', function() {
+  process.env.NODE_ENV = 'development';
+
   nodemon({
     script: 'bin/www',
   }).on('restart');

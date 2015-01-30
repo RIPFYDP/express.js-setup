@@ -62,6 +62,7 @@ describe('app/models/user', function() {
   it('#save', function(done) {
     var options = {
       username: faker.internet.userName(),
+      email:    faker.internet.email(),
       password: faker.internet.password()
     };
     var user = new User(options);
@@ -69,11 +70,11 @@ describe('app/models/user', function() {
     user.save()
     .then(
       function(docs) {
-        expect(docs).to.be.a('Array');
-        expect(docs[0]).to.be.a('Object');
-        expect(docs[0]).to.have.property('_id');
-        expect(docs[0].username).to.be.equal(options.username);
-        expect(docs[0].password).to.be.equal(options.password);
+        expect(docs).to.be.a('Object');
+        expect(docs).to.have.property('_id');
+        expect(docs.username).to.be.equal(options.username);
+        expect(docs.email).to.be.equal(options.email);
+        expect(docs.password).to.be.equal(options.password);
         done();
       },
       function(error) {},
