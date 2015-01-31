@@ -102,13 +102,8 @@ var usersController = {
         }
       },
       function(error) {
-        // TODO: add title default
-        var options = {
-          alertType: 'danger',
-          alertMessage: 'Sorry, ' + user.username + ' is already taken.'
-        };
-        // TODO: change the url correctly
-        return res.render('users/sign_up', options);
+        req.flash('danger', 'Sorry, the username, ' + user.username + ' is already taken.');
+        return res.redirect('/sign_up');
       }
     )
     .then(
@@ -117,13 +112,8 @@ var usersController = {
         return res.redirect('/');
       },
       function(error) {
-        // TODO: add title default
-        var options = {
-          alertType: 'danger',
-          alertMessage: 'Sorry, ' + user.email + ' is already used to sign up.'
-        };
-        // TODO: change the url correctly
-        return res.render('users/sign_up', options);
+        req.flash('danger', 'Sorry, ' + user.email + ' is already used to sign up.');
+        return res.redirect('/sign_up');
       }
     )
     .fail(function (error) {

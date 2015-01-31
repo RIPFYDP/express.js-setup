@@ -2,6 +2,8 @@ var app       = require('../../../../app'),
     Nightmare = require('nightmare'),
     chai      = require('chai'),
     faker     = require('faker'),
+    User      = require('../../../../app/models/user'),
+    Q         = require('q'),
     expect    = chai.expect,
     server,
     nightmare;
@@ -33,7 +35,7 @@ describe('/sign_up', function() {
     .run(done);
   });
 
-  it('sign up', function(done) {
+  it('sign up successfully', function(done) {
     var username = faker.internet.userName();
 
     nightmare.goto('http://localhost:3001/sign_up')
@@ -52,6 +54,56 @@ describe('/sign_up', function() {
       }
     )
     .run(done);
+  });
+
+  it('sign up with existing username', function(done) {
+    User.all()
+    .then(function(docs){
+      var user = docs[0];
+      var username = user.username;
+
+      nightmare.goto('http://localhost:3001/sign_up')
+      .type('input[name="username"]', username)
+      .type('input[name="email"]', faker.internet.email())
+      .type('input[name="password"]', faker.internet.password())
+      .click('button.btn.btn-default')
+      .wait('.alert-message')
+      .evaluate(
+        function() {
+          console.log(document);
+          return document.querySelector('.alert-message').innerText;
+        },
+        function(text) {
+          expect(text).to.equal('Sorry, the username, ' + username + ' is already taken.');
+        }
+      )
+      .run(done);
+    });
+  });
+
+  it('sign up with existing email', function(done) {
+    User.all()
+    .then(function(docs){
+      var user = docs[0];
+      var email = user.email;
+
+      nightmare.goto('http://localhost:3001/sign_up')
+      .type('input[name="username"]', faker.internet.username())
+      .type('input[name="email"]', email)
+      .type('input[name="password"]', faker.internet.password())
+      .click('button.btn.btn-default')
+      .wait('.alert-message')
+      .evaluate(
+        function() {
+          console.log(document);
+          return document.querySelector('.alert-message').innerText;
+        },
+        function(text) {
+          expect(text).to.equal('Sorry, ' + email + ' is already used to sign up.');
+        }
+      )
+      .run(done);
+    });
   });
 
 })
