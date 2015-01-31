@@ -7,6 +7,8 @@ var express        = require('express'),
     swig           = require('swig'),
     mongoConnector = require('./config/db/mongo_connector'),
     passport       = require('passport'),
+    flash          = require('flash'),
+    session        = require('express-session'),
     app            = express();
 
 // view engine setup
@@ -34,10 +36,20 @@ app.use(cookieParser());
 app.use(require('node-compass')({mode: 'expanded'}));
 app.use(express.static(path.join(__dirname, 'public')));
 
+// TODO: need session secret
+app.use(session({
+  resave: true,
+  saveUninitialized: true,
+  secret: process.env.SESSION_SECRET || 'Your Session Secret goes here'
+}));
+
 // Use passport
 var passportConfig = require('./config/application/passport_config');
 app.use(passport.initialize());
 app.use(passport.session());
+
+// Use Flash
+app.use(flash());
 
 // Initialize routes
 var router = require('./app/routes/routes.js');

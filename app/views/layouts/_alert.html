@@ -1,10 +1,12 @@
-{% if alertMessage && alertType %}
+{% if flash %}
   <div class="row">
     <div class="col-md-12">
-      <div class="alert alert-{{alertType}} alert-dismissible" role="alert">
+      {% for message in flash %}
+      <div class="alert alert-{{message.type}} alert-dismissible" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <div class="alert-message">{{alertMessage}}</div>
+        <div class="alert-message">{{message.message}}</div>
       </div>
+      {% endfor %}
     </div>
   </div>
 {% endif %}

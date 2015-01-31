@@ -39,9 +39,7 @@ var usersController = {
   },
 
   signUp: function(req, res) {
-    var options;
-
-    options = {
+    var options = {
       title: 'Sign up'
     };
 
@@ -74,7 +72,6 @@ var usersController = {
 
   signUpPost: function(req, res) {
     // TODO: need error handling
-
     var user = new User({
       username: req.body.username,
       email:    req.body.email,
@@ -116,12 +113,8 @@ var usersController = {
     )
     .then(
       function(docs) {
-        var options = {
-          alertType: 'success',
-          alertMessage: 'Thank you for signing up, ' + docs.username
-        };
-
-        return res.render('application/index', options);
+        req.flash('success', 'Thank you for signing up, ' + docs.username);
+        return res.redirect('/');
       },
       function(error) {
         // TODO: add title default
@@ -130,13 +123,13 @@ var usersController = {
           alertMessage: 'Sorry, ' + user.email + ' is already used to sign up.'
         };
         // TODO: change the url correctly
-        console.log(res);
         return res.render('users/sign_up', options);
       }
     )
     .fail(function (error) {
       // TODO: Error handling
     });;
+
   }
 };
 

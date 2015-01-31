@@ -1,8 +1,10 @@
 var express = require('express'),
     router  = express.Router(),
-    pagesController = require('../controllers/pages_controller'),
-    usersController = require('../controllers/users_controller');
+    applicationController = require('../controllers/application_controller'),
+    pagesController       = require('../controllers/pages_controller'),
+    usersController       = require('../controllers/users_controller');
 
+router.get('/*', applicationController.index);
 router.get('/', pagesController.index);
 
 router.get('/sign_in', usersController.signIn);
