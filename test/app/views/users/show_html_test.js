@@ -44,4 +44,4 @@ describe('/user/username', function() {
     });
   });
 
-})
+});

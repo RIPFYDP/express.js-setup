@@ -1,5 +1,6 @@
 var Q             = require('q'),
     attributa     = require('attributa'),
+    bcrypt        = require('bcrypt'),
     globalLibrary = require('../../config/application/global_library'),
     users,
     User;
@@ -51,11 +52,9 @@ User.find = function(options) {
 
 User.prototype.save = function() {
   var deferred = Q.defer(),
-      options  = {
-        username: this.username,
-        email   : this.email,
-        password: this.password
-      };
+      options  = {};
+
+  attributa.assign(options, this);
 
   globalLibrary.db.collection('users').insert(options, function(err, items) {
 
@@ -64,6 +63,27 @@ User.prototype.save = function() {
     } else {
       deferred.resolve(items[0]);
     }
+  });
+
+  return deferred.promise;
+};
+
+User.prototype.signUp = function() {
+  var deferred = Q.defer(),
+      options = {},
+      self    = this;
+
+  bcrypt.genSalt(12, function(err, salt) {
+    bcrypt.hash('B4c0/\/', salt, function(err, hash) {
+
+      if (err) {
+        deferred.reject(new Error(err));
+      } else {
+        self.password = hash;
+        deferred.resolve(self.save());
+      }
+
+    });
   });
 
   return deferred.promise;

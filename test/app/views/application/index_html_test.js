@@ -32,4 +32,4 @@ describe('/', function() {
       .run(done);
   });
 
-})
+});

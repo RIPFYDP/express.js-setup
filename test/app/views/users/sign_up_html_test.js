@@ -102,7 +102,6 @@ describe('/sign_up', function() {
       .run(done);
     });
 
-
   });
 
-})
+});

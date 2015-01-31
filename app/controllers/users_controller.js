@@ -96,7 +96,7 @@ var usersController = {
       function(docs) {
 
         if (_.isEmpty(docs)) {
-          return user.save();
+          return user.signUp();
         } else {
           throw new Error();
         }
@@ -118,7 +118,7 @@ var usersController = {
     )
     .fail(function (error) {
       // TODO: Error handling
-    });;
+    });
 
   }
 };

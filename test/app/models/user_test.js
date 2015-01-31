@@ -82,4 +82,23 @@ describe('app/models/user', function() {
     );
   });
 
+  it('#signUp', function(done) {
+    var options = {
+      username: faker.internet.userName(),
+      email:    faker.internet.email(),
+      password: faker.internet.password()
+    };
+    var user = new User(options);
+
+    user.signUp()
+    .then(function(docs) {
+      expect(docs).to.be.a('Object');
+      expect(docs).to.have.property('_id');
+      expect(docs.username).to.be.equal(options.username);
+      expect(docs.email).to.be.equal(options.email);
+      expect(docs.password).to.not.equal(options.password);
+      done();
+    });
+  });
+
 });

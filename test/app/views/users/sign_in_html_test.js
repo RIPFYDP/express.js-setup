@@ -32,4 +32,4 @@ describe('/sign_in', function() {
     .run(done);
   });
 
-})
+});
