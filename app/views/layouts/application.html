@@ -19,16 +19,11 @@
   <![endif]-->
 </head>
 <body>
+  {% include "./_navigation.html" %}
 
-  {% include "./_alert.html" %}
+  <div class="container-fluid" id="main">
 
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-12">
-        <p>Welcome to {% block title %}{% endblock %}</p>
-        <p>O we got something here.</p>
-      </div>
-    </div>
+    {% include "./_alert.html" %}
 
     {% block content %}{% endblock %}
   </div>
