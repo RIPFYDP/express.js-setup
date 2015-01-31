@@ -8,6 +8,8 @@ var app       = require('../../../../app'),
     server,
     nightmare;
 
+faker.locale = 'en';
+
 describe('/sign_up', function() {
   this.timeout(30000);
 
@@ -46,7 +48,6 @@ describe('/sign_up', function() {
     .wait('.alert-message')
     .evaluate(
       function() {
-        console.log(document);
         return document.querySelector('.alert-message').innerText;
       },
       function(text) {
@@ -70,7 +71,6 @@ describe('/sign_up', function() {
       .wait('.alert-message')
       .evaluate(
         function() {
-          console.log(document);
           return document.querySelector('.alert-message').innerText;
         },
         function(text) {
@@ -88,14 +88,13 @@ describe('/sign_up', function() {
       var email = user.email;
 
       nightmare.goto('http://localhost:3001/sign_up')
-      .type('input[name="username"]', faker.internet.username())
+      .type('input[name="username"]', faker.internet.userName())
       .type('input[name="email"]', email)
       .type('input[name="password"]', faker.internet.password())
       .click('button.btn.btn-default')
       .wait('.alert-message')
       .evaluate(
         function() {
-          console.log(document);
           return document.querySelector('.alert-message').innerText;
         },
         function(text) {
@@ -104,6 +103,8 @@ describe('/sign_up', function() {
       )
       .run(done);
     });
+
+
   });
 
 })

@@ -4,11 +4,13 @@ var _      = require('lodash'),
     assert = require('assert'),
     config = require('../config/db/mongo_config');
 
+faker.locale = 'en';
+
 namespace('db', function() {
 
   desc('Drop database');
   task('drop', function() {
-    desc('Drop database');
+    console.log('Drop database');
 
     if (process.env.NODE_ENV === 'development'
       || process.env.NODE_ENV === 'test') {
