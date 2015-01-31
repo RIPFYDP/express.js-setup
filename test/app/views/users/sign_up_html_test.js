@@ -8,8 +8,6 @@ var app       = require('../../../../app'),
     server,
     nightmare;
 
-faker.locale = 'en';
-
 describe('/sign_up', function() {
   this.timeout(30000);
 

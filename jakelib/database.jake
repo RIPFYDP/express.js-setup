@@ -4,8 +4,6 @@ var _      = require('lodash'),
     assert = require('assert'),
     config = require('../config/db/mongo_config');
 
-faker.locale = 'en';
-
 namespace('db', function() {
 
   desc('Drop database');
