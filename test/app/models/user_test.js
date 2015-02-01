@@ -111,18 +111,15 @@ describe('app/models/user', function() {
 
     user.signUp()
     .then(function(docs) {
-      return docs.comparePassword(options.password);
-    })
-    .then(
-      function(docs) {
-        expect(docs).to.be.equal(true);
-        done();
-      },
-      function(error) {
-        throw new Error(error);
-        done();
-      }
-    );
+      docs.comparePassword(options.password, function(err, res) {
+        if (err) {
+          throw new Error(err);
+        } else {
+          expect(res).to.be.equal(true);
+          done();
+        }
+      });
+    });
   });
 
   it('#comparePassword fail', function(done) {
@@ -135,18 +132,15 @@ describe('app/models/user', function() {
 
     user.signUp()
     .then(function(docs) {
-      return docs.comparePassword('WrongPassword');
-    })
-    .then(
-      function(docs) {
-        expect(docs).to.be.equal(false);
-        done();
-      },
-      function(error) {
-        throw new Error(error);
-        done();
-      }
-    );
-  })
+      docs.comparePassword('WrongPasswordShouldFail', function(err, res) {
+        if (err) {
+          throw new Error(err);
+        } else {
+          expect(res).to.be.equal(false);
+          done();
+        }
+      });
+    });
+  });
 
 });

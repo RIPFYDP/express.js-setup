@@ -2,6 +2,7 @@ var passport       = require('passport'),
     LocalStrategy  = require('passport-local').Strategy,
     User           = require('../../app/models/user'),
     emailValidator = require('email-validator'),
+    Q              = require('q'),
     passportConfig;
 
 // Local authentication strategy
@@ -14,15 +15,20 @@ passport.use(new LocalStrategy(
       User.find({email: usernameEmail})
       .then(
         function(docs) {
-          if (!docs) {
-            return done(null, false, {message: 'Incorrect email.'});
+          var user = docs;
+
+          if (!user) {
+            return done(null, false, {message: 'Email not found.'});
           }
-          // TODO: Eventually uncomment this.
-          // if (!user.validPassword(password)) {
-          if (false) {
-            return done(null, false, {message: 'Incorrect passwordl'});
-          }
-          return done(null, docs);
+
+          user.comparePassword(password, function(err, isValid) {
+
+            if (isValid) {
+              return done(null, user);
+            } else {
+              return done(null, false, { message: 'Invalid password.' });
+            }
+          });
         }
       );
     } else {

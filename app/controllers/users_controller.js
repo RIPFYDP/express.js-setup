@@ -46,10 +46,23 @@ var usersController = {
     res.render('users/sign_up', options);
   },
 
-  signInPost: function(req, res) {
+  signInPost: function(req, res, next) {
     passport.authenticate('local', function(err, user, info) {
-      return res.redirect('/sign_in');
-    })(req, res);
+
+      if (err) {
+        next(err);
+      }
+
+      if (user) {
+        req.flash('success', 'Welcome, ' + user.username + '!');
+        return res.redirect('/');
+      } else {
+        req.flash('danger', info.message);
+        return res.redirect('/sign_in');
+      }
+
+
+    })(req, res, next);
   },
 
   show: function(req, res) {
@@ -89,7 +102,6 @@ var usersController = {
         }
       },
       function(error) {
-        console.log(1);
       }
     )
     .then(

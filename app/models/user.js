@@ -1,4 +1,5 @@
 var Q             = require('q'),
+    _             = require('lodash'),
     attributa     = require('attributa'),
     bcrypt        = require('bcrypt'),
     globalLibrary = require('../../config/application/global_library'),
@@ -38,7 +39,11 @@ User.find = function(options) {
     } else {
 
       if (items.length === 1) {
-        items = items[0];
+        items = new User(items[0]);
+      } else {
+        _.each(items, function(item) {
+          item = new User(item);
+        });
       }
 
       deferred.resolve(items);
@@ -100,20 +105,15 @@ User.prototype.signUp = function() {
   return deferred.promise;
 };
 
-User.prototype.comparePassword = function(candidatePassword) {
-  var deferred = Q.defer(),
-      self     = this;
-
-  bcrypt.compare(candidatePassword, self.password, function(err, res) {
+User.prototype.comparePassword = function(candidatePassword, callback) {
+  bcrypt.compare(candidatePassword, this.password, function(err, res) {
 
     if (err) {
-      deferred.reject(new Error(err));
+      return callback(err);
     } else {
-      deferred.resolve(res);
+      callback(null, res);
     }
   });
-
-  return deferred.promise;
 };
 
 module.exports = User;
