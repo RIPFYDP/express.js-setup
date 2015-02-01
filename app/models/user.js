@@ -57,11 +57,13 @@ User.prototype.save = function() {
   attributa.assign(options, this);
 
   globalLibrary.db.collection('users').insert(options, function(err, items) {
+    var user;
 
     if (err) {
       deferred.reject(new Error(err));
     } else {
-      deferred.resolve(items[0]);
+      user = new User(items[0]);
+      deferred.resolve(user);
     }
   });
 
@@ -70,20 +72,45 @@ User.prototype.save = function() {
 
 User.prototype.signUp = function() {
   var deferred = Q.defer(),
-      options = {},
-      self    = this;
+      options  = {},
+      self     = this;
 
   bcrypt.genSalt(12, function(err, salt) {
-    bcrypt.hash('B4c0/\/', salt, function(err, hash) {
+    bcrypt.hash(self.password, salt, function(err, hash) {
 
       if (err) {
         deferred.reject(new Error(err));
       } else {
         self.password = hash;
-        deferred.resolve(self.save());
+
+        self.save()
+        .then(
+          function(docs) {
+            deferred.resolve(docs);
+          },
+          function(err) {
+            deferred.reject(new Error(err));
+          }
+        );
       }
 
     });
+  });
+
+  return deferred.promise;
+};
+
+User.prototype.comparePassword = function(candidatePassword) {
+  var deferred = Q.defer(),
+      self     = this;
+
+  bcrypt.compare(candidatePassword, self.password, function(err, res) {
+
+    if (err) {
+      deferred.reject(new Error(err));
+    } else {
+      deferred.resolve(res);
+    }
   });
 
   return deferred.promise;

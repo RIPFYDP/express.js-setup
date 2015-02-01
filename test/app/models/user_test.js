@@ -101,4 +101,52 @@ describe('app/models/user', function() {
     });
   });
 
+  it('#comparePassword success', function(done) {
+    var options = {
+      username: faker.internet.userName(),
+      email:    faker.internet.email(),
+      password: faker.internet.password()
+    };
+    var user = new User(options);
+
+    user.signUp()
+    .then(function(docs) {
+      return docs.comparePassword(options.password);
+    })
+    .then(
+      function(docs) {
+        expect(docs).to.be.equal(true);
+        done();
+      },
+      function(error) {
+        throw new Error(error);
+        done();
+      }
+    );
+  });
+
+  it('#comparePassword fail', function(done) {
+    var options = {
+      username: faker.internet.userName(),
+      email:    faker.internet.email(),
+      password: faker.internet.password()
+    };
+    var user = new User(options);
+
+    user.signUp()
+    .then(function(docs) {
+      return docs.comparePassword('WrongPassword');
+    })
+    .then(
+      function(docs) {
+        expect(docs).to.be.equal(false);
+        done();
+      },
+      function(error) {
+        throw new Error(error);
+        done();
+      }
+    );
+  })
+
 });
