@@ -4,6 +4,7 @@ var gulp        = require('gulp'),
     exit        = require('gulp-exit'),
     jshint      = require('gulp-jshint'),
     shell       = require('gulp-shell'),
+    duration    = require('gulp-duration')
     runSequence = require('run-sequence'),
     stylish     = require('jshint-stylish');
 
@@ -33,6 +34,7 @@ gulp.task('test-once', function() {
   process.env.NODE_ENV = 'test';
   return gulp.src('test/**/**/*.js', {read: false})
              .pipe(mocha({reporter: 'nyan'}))
+             .pipe(duration('Running tests'))
              .pipe(exit());
 });
 
