@@ -196,4 +196,25 @@ describe('/sign_in', function() {
       .run(done);
     });
   });
+
+  it('has forgot password link', function(done) {
+    nightmare.goto('http://localhost:3001/sign_in')
+    .evaluate(
+      function() {
+        return document.querySelector('.forgot-password').innerText;
+      },
+      function(text) {
+        expect(text).to.equal('Forgot password?');
+      }
+    )
+    .evaluate(
+      function() {
+        return document.querySelector('.forgot-password').getAttribute('href');
+      },
+      function(href) {
+        expect(href).to.equal('/forgot_password');
+      }
+    )
+    .run(done);
+  })
 });

@@ -131,6 +131,18 @@ var usersController = {
       // TODO: Error handling
     });
 
+  },
+
+  forgotPassword: function(req, res) {
+    var options = {
+      title: 'Forgot password'
+    };
+
+    res.render('users/forgot_password', options);
+  },
+
+  forgotPasswordPost: function(req, res, next) {
+
   }
 };
 
