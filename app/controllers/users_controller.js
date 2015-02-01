@@ -53,14 +53,13 @@ var usersController = {
         next(err);
       }
 
-      if (user) {
+      if (!_.isEmpty(user)) {
         req.flash('success', 'Welcome, ' + user.username + '!');
         return res.redirect('/');
       } else {
         req.flash('danger', info.message);
         return res.redirect('/sign_in');
       }
-
 
     })(req, res, next);
   },

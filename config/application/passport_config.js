@@ -1,5 +1,6 @@
 var passport       = require('passport'),
     LocalStrategy  = require('passport-local').Strategy,
+    _              = require('lodash'),
     User           = require('../../app/models/user'),
     emailValidator = require('email-validator'),
     Q              = require('q'),
@@ -17,8 +18,8 @@ passport.use(new LocalStrategy(
         function(docs) {
           var user = docs;
 
-          if (!user) {
-            return done(null, false, {message: 'Email not found.'});
+          if (_.isEmpty(user)) {
+            return done(null, false, { message: 'Email not found.' });
           }
 
           user.comparePassword(password, function(err, isValid) {
@@ -35,16 +36,20 @@ passport.use(new LocalStrategy(
       User.find({username: usernameEmail})
       .then(
         function(docs) {
-          if (!docs) {
-            return done(null, false, {message: 'Incorrect username.'});
-          }
-          // TODO: Eventually uncomment this.
-          // if (!user.validPassword(password)) {
-          if (false) {
-            return done(null, false, {message: 'Incorrect passwordl'});
+          var user = docs;
+
+          if (_.isEmpty(user)) {
+            return done(null, false, { message: 'User not found.' });
           }
 
-          return done(null, docs);
+          user.comparePassword(password, function(err, isValid) {
+
+            if (isValid) {
+              return done(null, user);
+            } else {
+              return done(null, false, { message: 'Invalid password.' });
+            }
+          });
         }
       );
     }
