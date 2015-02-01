@@ -9,7 +9,7 @@ var app       = require('../../../../app'),
     nightmare;
 
 describe('/sign_up', function() {
-  this.timeout(90000);
+  this.timeout(80000);
 
   before(function(done) {
     server = app.listen(3001);

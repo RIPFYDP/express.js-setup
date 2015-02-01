@@ -23,7 +23,13 @@ gulp.task('nodemon', function() {
 gulp.task('test-complete', function(callback) {
   process.env.NODE_ENV = 'test';
   runSequence('jake-prepopulate', 'test-once',
-  callback);
+    callback);
+});
+
+gulp.task('db-prepare', function(callback) {
+  process.env.NODE_ENV = 'development';
+  runSequence('jake-prepopulate',
+    callback);
 });
 
 gulp.task('jake-prepopulate', shell.task([

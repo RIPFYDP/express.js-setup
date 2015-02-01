@@ -2,6 +2,7 @@ var _      = require('lodash'),
     faker  = require('faker'),
     Mongo  = require('mongodb').MongoClient,
     assert = require('assert'),
+    bcrypt = require('bcrypt');
     config = require('../config/db/mongo_config');
 
 namespace('db', function() {
@@ -54,10 +55,16 @@ namespace('db', function() {
 
     // Create an array of 100 fake users
     _.times(100, function() {
-      users.push({
-        username: faker.internet.userName(),
-        email:    faker.internet.email(),
-        password: faker.internet.password()
+      bcrypt.genSalt(10, function(err, salt) {
+        bcrypt.hash(faker.internet.password(), salt, function(err, hash) {
+
+          users.push({
+            username: faker.internet.userName(),
+            email:    faker.internet.email(),
+            password: hash
+          });
+
+        });
       });
     });
 
