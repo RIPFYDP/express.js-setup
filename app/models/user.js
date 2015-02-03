@@ -63,7 +63,7 @@ User.callbackFindById = function(options, callback) {
       callback(null, items);
     }
   });
-}
+};
 
 // Instnce methods
 

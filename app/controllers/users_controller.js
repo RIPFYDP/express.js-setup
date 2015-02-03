@@ -140,6 +140,11 @@ var usersController = {
 
   },
 
+  signOut: function(req, res) {
+    req.logout();
+    return res.redirect('/');
+  },
+
   forgotPassword: function(req, res) {
     var options = {
       title: 'Forgot password'

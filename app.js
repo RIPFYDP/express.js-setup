@@ -51,6 +51,12 @@ app.use(passport.session());
 // Use Flash
 app.use(flash());
 
+// Set currentUser as user
+app.use(function(req, res, next) {
+  res.locals.user = req.user;
+  next();
+});
+
 // Initialize routes
 var router = require('./app/routes/routes.js');
 app.use('/', router);

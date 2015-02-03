@@ -8,6 +8,7 @@ router.get('/*', applicationController.index);
 router.get('/', pagesController.index);
 
 router.get('/sign_in', usersController.signIn);
+router.get('/sign_out', usersController.signOut);
 router.get('/sign_up', usersController.signUp);
 router.get('/forgot_password', usersController.forgotPassword);
 router.get('/users', usersController.index);
