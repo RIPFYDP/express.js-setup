@@ -53,6 +53,18 @@ User.find = function(options) {
   return deferred.promise;
 };
 
+User.callbackFindById = function(options, callback) {
+  globalLibrary.db.collection('users').find(options).toArray(function(err, items) {
+
+    if (err) {
+      callback(err);
+    } else {
+      items = new User(items[0]);
+      callback(null, items);
+    }
+  });
+}
+
 // Instnce methods
 
 User.prototype.save = function() {
