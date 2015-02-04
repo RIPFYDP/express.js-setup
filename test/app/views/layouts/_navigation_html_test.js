@@ -67,6 +67,9 @@ describe('navigation', function() {
       .exists('.sign-out', function(bool) {
         expect(bool).to.equal(true);
       })
+      .exists('.settings', function(bool) {
+        expect(bool).to.equal(true);
+      })
       .run(done);
     });
   });
