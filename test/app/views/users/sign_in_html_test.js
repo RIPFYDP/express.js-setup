@@ -217,4 +217,35 @@ describe('/sign_in', function() {
     )
     .run(done);
   });
+
+  it('sign out successfully', function(done) {
+    var options = {
+      username: faker.internet.userName(),
+      email:    faker.internet.email(),
+      password: faker.internet.password()
+    };
+    var user = new User(options);
+
+    user.signUp()
+    .then(function(docs) {
+      nightmare.goto('http://localhost:3001/sign_in')
+      .type('input[name="usernameEmail"]', options.email)
+      .type('input[name="password"]', options.password)
+      .click('button.btn.btn-default')
+      .wait('.alert-message')
+      .click('#navbar .dropdown-toggle')
+      .wait('.sign-out')
+      .click('.sign-out')
+      .wait('.sign-in')
+      .evaluate(
+        function() {
+          return document.querySelector('.alert-message').innerText;
+        },
+        function(text) {
+          expect(text).to.equal('Signed out successfully.');
+        }
+      )
+      .run(done);
+    });
+  });
 });

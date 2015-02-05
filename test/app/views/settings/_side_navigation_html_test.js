@@ -24,15 +24,7 @@ describe('/settings', function() {
     nightmare = new Nightmare();
   });
 
-  it('signed out', function(done) {
-    nightmare.goto('http://localhost:3001/settings')
-    .url(function(url) {
-      expect(url).to.equal('http://localhost:3001/sign_in');
-    })
-    .run(done);
-  });
-
-  it('title signed in', function(done) {
+  it('side navs', function(done) {
     var options = {
       username: faker.internet.userName(),
       email:    faker.internet.email(),
@@ -49,17 +41,18 @@ describe('/settings', function() {
       .wait('.alert-message')
 
       .goto('http://localhost:3001/settings')
-      .url(function(url) {
-        expect(url).to.equal('http://localhost:3001/settings');
+      .wait('.settings-navbar')
+      .exists('.preferences', function(bool) {
+        expect(bool).to.equal(true);
       })
-      .evaluate(function() {
-        return document.querySelector('title').innerText;
-      }, function(text) {
-        expect(text).to.equal('Settings');
+      .exists('.account', function(bool) {
+        expect(bool).to.equal(true);
+      })
+      .exists('.profile', function(bool) {
+        expect(bool).to.equal(true);
       })
       .run(done);
     });
-
   });
 
 });

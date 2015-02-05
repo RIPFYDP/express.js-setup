@@ -21,6 +21,13 @@ router.post('/users/sign_up', usersController.signUpPost);
 router.post('/users/forgot_password', usersController.forgotPasswordPost);
 
 // settings
-router.get('/settings', sessionHelper.isAuthenticated, settingsController.index);
+router.get('/settings', sessionHelper.isAuthenticated, settingsController.profile);
+router.get('/settings/profile', sessionHelper.isAuthenticated, settingsController.profile);
+router.get('/settings/account', sessionHelper.isAuthenticated, settingsController.account);
+router.get('/settings/preferences', sessionHelper.isAuthenticated, settingsController.preferences);
+router.post('/settings/post_profile', sessionHelper.isAuthenticated, settingsController.postProfile);
+router.post('/settings/post_account_password', sessionHelper.isAuthenticated, settingsController.postAccountPassword);
+router.post('/settings/post_account_email', sessionHelper.isAuthenticated, settingsController.postAccountEmail);
+router.post('/settings/post_account_deactivate', sessionHelper.isAuthenticated, settingsController.postAccountDeactivate);
 
 module.exports = router;

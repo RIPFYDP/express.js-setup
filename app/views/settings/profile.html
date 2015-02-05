@@ -1,0 +1,25 @@
+{% extends '../layouts/application.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-md-4">
+    {% include "./_side_navigation.html" %}
+  </div>
+  <div class="col-md-8">
+    <h1>Profile</h1>
+
+    <form action="settings/post_profile" method="POST">
+      <div class="form-group">
+        <label for="fullname">Fullname</label>
+        <input type="text" class="form-control" id="fullname" name="fullname">
+      </div>
+
+      <button type="submit" class="btn btn-default">Save</button>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

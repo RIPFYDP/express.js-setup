@@ -142,7 +142,8 @@ var usersController = {
 
   signOut: function(req, res) {
     req.logout();
-    return res.redirect('/');
+    req.session.flash = [ { message: 'Signed out successfully.', type: 'success' } ];
+    res.redirect('/');
   },
 
   forgotPassword: function(req, res) {

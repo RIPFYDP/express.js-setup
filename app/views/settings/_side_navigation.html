@@ -1,0 +1,11 @@
+<ul class="nav nav-pills nav-stacked settings-navbar">
+  <li {% if liActive == 'profile' %}class="active profile"{% else %}class="profile"{% endif %}>
+    <a href="/settings/profile">Profile</a>
+  </li>
+  <li {% if liActive == 'account' %}class="active account"{% else %}class="account"{% endif %}>
+    <a href="/settings/account">Account</a>
+  </li>
+  <li {% if liActive == 'preferences' %}class="active preferences"{% else %}class="preferences"{% endif %}>
+    <a href="/settings/preferences">Preferences</a>
+  </li>
+</ul>
