@@ -73,13 +73,13 @@ User.prototype.save = function() {
 
   attributa.assign(options, this);
 
-  globalLibrary.db.collection('users').insert(options, function(err, items) {
+  globalLibrary.db.collection('users').insertOne(options, function(err, items) {
     var user;
 
     if (err) {
       deferred.reject(new Error(err));
     } else {
-      user = new User(items[0]);
+      user = new User(items.ops[0]);
       deferred.resolve(user);
     }
   });
@@ -126,6 +126,26 @@ User.prototype.comparePassword = function(candidatePassword, callback) {
       callback(null, res);
     }
   });
+};
+
+// Update user instance
+User.prototype.update = function(options) {
+  var self = this,
+      deferred = Q.defer();
+
+  globalLibrary.db.collection('users')
+    .findOneAndUpdate({_id: self._id}, {$set: options}, {returnOriginal: false}, function(err, item) {
+
+    if (err) {
+      deferred.reject(new Error(err));
+    } else {
+      user = new User(item.value);
+      deferred.resolve(user);
+    }
+  });
+
+
+  return deferred.promise;
 };
 
 module.exports = User;

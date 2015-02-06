@@ -143,4 +143,29 @@ describe('app/models/user', function() {
     });
   });
 
+  it('#update', function(done) {
+    var options = {
+      username: faker.internet.userName(),
+      email:    faker.internet.email(),
+      password: faker.internet.password()
+    };
+    var user = new User(options);
+    var fullname = faker.name.firstName() + ' ' + faker.name.lastName();
+
+    user.signUp()
+    .then(function(docs) {
+      return docs.update({fullname: fullname});
+    })
+    .then(
+      function(docs) {
+        expect(docs.fullname).to.equal(fullname);
+        done();
+      },
+      function(err) {
+        assert.equal(null, err);
+        done();
+      }
+    );
+  });
+
 });

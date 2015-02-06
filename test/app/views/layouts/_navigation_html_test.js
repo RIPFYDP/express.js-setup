@@ -20,8 +20,25 @@ describe('navigation', function() {
     done();
   });
 
-  it('signed off state', function(done) {
-    new Nightmare().goto('http://localhost:3001/')
+  beforeEach(function() {
+    nightmare = new Nightmare();
+  });
+
+  // TODO: revisit this when phantomjs session destroy gets fixed
+  it.skip('signed off state', function(done) {
+    nightmare.goto('http://localhost:3001/sign_out')
+    .wait('.alert-message')
+    .evaluate(
+      function() {
+        return document.querySelector('.alert-message').innerText;
+      },
+      function(text) {
+        expect(text).to.equal('Signed out successfully.');
+      }
+    )
+    .wait(500)
+    .viewport(1200, 1000)
+    .screenshot('test/testScaleIs2.png')
     .exists('.sign-up', function(bool) {
       expect(bool).to.equal(true);
     })
@@ -44,8 +61,7 @@ describe('navigation', function() {
 
     user.signUp()
     .then(function(docs) {
-      new Nightmare()
-      .goto('http://localhost:3001/sign_in')
+      nightmare.goto('http://localhost:3001/sign_in')
       .type('input[name="usernameEmail"]', options.email)
       .type('input[name="password"]', options.password)
       .click('button.btn.btn-default')
