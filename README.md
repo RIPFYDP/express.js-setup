@@ -23,3 +23,7 @@ Go to [http://localhost:3000/](http://localhost:3000/).
 Install `jake` globally.
 
 `$ npm install jake --g`
+
+## Links
+
+[Node.js MongoDB Driver API](http://mongodb.github.io/node-mongodb-native/2.0/api/)
