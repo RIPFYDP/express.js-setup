@@ -61,7 +61,8 @@ namespace('db', function() {
           users.push({
             username: faker.internet.userName(),
             email:    faker.internet.email(),
-            password: hash
+            password: hash,
+            fullname: ''
           });
 
         });
