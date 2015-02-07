@@ -2,7 +2,8 @@ var _              = require('lodash'),
     Q              = require('q'),
     passport       = require('passport'),
     User           = require('../models/user'),
-    passportConfig = require('../../config/application/passport_config');
+    passportConfig = require('../../config/application/passport_config'),
+    globalLibrary  = require('../../config/application/global_library');
 
 var usersController = {
   index: function(req, res) {
@@ -142,6 +143,7 @@ var usersController = {
 
   signOut: function(req, res) {
     req.logout();
+    globalLibrary.currentUser = {};
     req.session.flash = [ { message: 'Signed out successfully.', type: 'success' } ];
     res.redirect('/');
   },

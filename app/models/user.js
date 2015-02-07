@@ -42,7 +42,7 @@ User.find = function(options) {
         items = new User(items[0]);
       } else {
         _.each(items, function(item) {
-          item = new User(item);
+          items = new User(items);
         });
       }
 
@@ -140,10 +140,10 @@ User.prototype.update = function(options) {
       deferred.reject(new Error(err));
     } else {
       user = new User(item.value);
+      globalLibrary.currentUser = user;
       deferred.resolve(user);
     }
   });
-
 
   return deferred.promise;
 };

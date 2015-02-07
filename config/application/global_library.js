@@ -1,3 +1,5 @@
-var globalLibrary = {};
+var globalLibrary = {
+  currentUser: {}
+};
 
 module.exports = globalLibrary;

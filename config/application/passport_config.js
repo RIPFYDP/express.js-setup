@@ -4,6 +4,7 @@ var passport       = require('passport'),
     User           = require('../../app/models/user'),
     emailValidator = require('email-validator'),
     Q              = require('q'),
+    globalLibrary  = require('./global_library'),
     passportConfig;
 
 // Local authentication strategy
@@ -25,6 +26,7 @@ passport.use(new LocalStrategy(
           user.comparePassword(password, function(err, isValid) {
 
             if (isValid) {
+              globalLibrary.currentUser = user;
               return done(null, user);
             } else {
               return done(null, false, { message: 'Invalid password.' });
@@ -45,6 +47,7 @@ passport.use(new LocalStrategy(
           user.comparePassword(password, function(err, isValid) {
 
             if (isValid) {
+              globalLibrary.currentUser = user;
               return done(null, user);
             } else {
               return done(null, false, { message: 'Invalid password.' });
