@@ -148,4 +148,33 @@ User.prototype.update = function(options) {
   return deferred.promise;
 };
 
+User.prototype.updatePassword = function(options) {
+  var self = this,
+      deferred = Q.defer();
+
+  bcrypt.genSalt(12, function(err, salt) {
+    bcrypt.hash(options.password, salt, function(err, hash) {
+
+      if (err) {
+        deferred.reject(new Error(err));
+      } else {
+        options.password = hash;
+
+        self.update(options)
+        .then(
+          function(docs) {
+            deferred.resolve(docs);
+          },
+          function(err) {
+            deferred.reject(new Error(err));
+          }
+        );
+      }
+
+    });
+  });
+
+  return deferred.promise;
+};
+
 module.exports = User;

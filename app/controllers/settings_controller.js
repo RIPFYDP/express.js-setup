@@ -51,7 +51,27 @@ var settingsController = {
   },
 
   postAccountPassword: function(req, res) {
+    var user = globalLibrary.currentUser;
 
+    user.comparePassword(req.body.current_password, function(err, isValid) {
+
+      if (isValid) {
+        user.updatePassword({password: req.body.new_password})
+        .then(
+          function(user) {
+            req.flash('success', 'Success! Updated the password.');
+            return res.redirect('/settings/account');
+          },
+          function(err) {
+            req.flash('danger', 'Sorry, we couldn\'t update your password.');
+            return res.redirect('/settings/account');
+          }
+        );
+      } else {
+        req.flash('danger', 'Sorry, your current password incorrect.');
+        return res.redirect('/settings/account');
+      }
+    });
   },
 
   postAccountEmail: function(req, res) {

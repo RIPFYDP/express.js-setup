@@ -83,8 +83,8 @@ describe('/settings', function() {
       .url(function(url) {
         expect(url).to.equal('http://localhost:3001/settings/account');
       })
-      .type('input[name="password"]', options.newPassword)
-      .type('input[name="new-password"]', newPassword)
+      .type('input[name="current_password"]', options.password)
+      .type('input[name="new_password"]', newPassword)
       .click('.change-password button.btn.btn-default')
       .wait('.alert-message')
       .evaluate(function() {

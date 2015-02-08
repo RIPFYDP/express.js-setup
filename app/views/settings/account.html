@@ -12,7 +12,7 @@
     <h1>Account settings</h1>
 
     <h2>Change password</h2>
-    <form action="settings/post_account_password" method="POST">
+    <form class="change-password" action="/settings/post_account_password" method="POST">
       <div class="form-group">
         <label for="current_password">Current password</label>
         <input type="text" class="form-control" id="current_password" name="current_password">
@@ -28,7 +28,7 @@
     <hr>
 
     <h2>Change email</h2>
-    <form action="settings/post_account_email" method="POST">
+    <form action="/settings/post_account_email" method="POST">
       <div class="form-group">
         <label for="current_email">Current email</label>
         <input type="text" class="form-control" id="current_email" name="current_email">
@@ -54,7 +54,7 @@
       <div class="panel-body">
         <p>Please re-type your email address to confirm deactivating your account.</p>
 
-        <form action="settings/post_account_deactivate" method="POST">
+        <form action="/settings/post_account_deactivate" method="POST">
           <div class="form-group">
             <label for="email">Email</label>
             <input type="text" class="form-control" id="email" name="email">
