@@ -97,4 +97,37 @@ describe('/settings', function() {
 
   });
 
+  it('change email', function(done) {
+    var options = {
+      username: faker.internet.userName(),
+      email:    faker.internet.email(),
+      password: faker.internet.password()
+    };
+    var newEmail = faker.internet.email();
+    var user = new User(options);
+
+    user.signUp()
+    .then(function(docs) {
+      nightmare.goto('http://localhost:3001/sign_in')
+      .type('input[name="usernameEmail"]', options.email)
+      .type('input[name="password"]', options.password)
+      .click('button.btn.btn-default')
+      .wait('.alert-message')
+
+      .goto('http://localhost:3001/settings/account')
+      .url(function(url) {
+        expect(url).to.equal('http://localhost:3001/settings/account');
+      })
+      .type('input[name="new_email"]', newEmail)
+      .click('.change-email button.btn.btn-default')
+      .wait('.alert-message')
+      .evaluate(function() {
+        return document.querySelector('.alert-message').innerText;
+      }, function(text) {
+        expect(text).to.equal('Success! Updated the email.');
+      })
+      .run(done);
+    });
+  });
+
 });

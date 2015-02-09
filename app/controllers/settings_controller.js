@@ -1,5 +1,6 @@
 var User = require('../models/user'),
-    globalLibrary = require('../../config/application/global_library');
+    globalLibrary = require('../../config/application/global_library'),
+    emailValidator = require('email-validator');
 
 var settingsController = {
   profile: function(req, res) {
@@ -15,7 +16,8 @@ var settingsController = {
   account: function(req, res) {
     var options = {
       title: 'Settings - Account settings',
-      liActive: 'account'
+      liActive: 'account',
+      currentUser: globalLibrary.currentUser
     };
 
     res.render('settings/account', options);
@@ -75,7 +77,24 @@ var settingsController = {
   },
 
   postAccountEmail: function(req, res) {
+    var user = globalLibrary.currentUser;
 
+    if (!emailValidator.validate(req.body.new_email)) {
+      req.flash('danger', 'Your email is invalid.');
+      return res.redirect('/settings/account');
+    }
+
+    user.update({email: req.body.new_email})
+    .then(
+      function(user) {
+        req.flash('success', 'Success! Updated the email.');
+        return res.redirect('/settings/account');
+      },
+      function(err) {
+        req.flash('danger', 'Sorry, we couldn\'t update your email.');
+        return res.redirect('/settings/account');
+      }
+    )
   },
 
   postAccountDeactivate: function(req, res) {
