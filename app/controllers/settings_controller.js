@@ -94,7 +94,7 @@ var settingsController = {
         req.flash('danger', 'Sorry, we couldn\'t update your email.');
         return res.redirect('/settings/account');
       }
-    )
+    );
   },
 
   postAccountDeactivate: function(req, res) {
