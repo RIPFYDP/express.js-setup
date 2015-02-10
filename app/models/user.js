@@ -3,6 +3,7 @@ var Q             = require('q'),
     attributa     = require('attributa'),
     bcrypt        = require('bcrypt'),
     globalLibrary = require('../../config/application/global_library'),
+    validator     = require('validator'),
     users,
     User;
 

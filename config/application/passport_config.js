@@ -2,7 +2,7 @@ var passport       = require('passport'),
     LocalStrategy  = require('passport-local').Strategy,
     _              = require('lodash'),
     User           = require('../../app/models/user'),
-    emailValidator = require('email-validator'),
+    validator      = require('validator'),
     Q              = require('q'),
     globalLibrary  = require('./global_library'),
     passportConfig;
@@ -13,7 +13,7 @@ passport.use(new LocalStrategy(
   {usernameField: 'usernameEmail'},
   function(usernameEmail, password, done) {
 
-    if (emailValidator.validate(usernameEmail)) {
+    if (validator.isEmail(usernameEmail)) {
       User.find({email: usernameEmail})
       .then(
         function(docs) {

@@ -1,6 +1,6 @@
 var User = require('../models/user'),
     globalLibrary = require('../../config/application/global_library'),
-    emailValidator = require('email-validator');
+    validator     = require('validator');
 
 var settingsController = {
   profile: function(req, res) {
@@ -82,7 +82,7 @@ var settingsController = {
   postAccountEmail: function(req, res) {
     var user = globalLibrary.currentUser;
 
-    if (!emailValidator.validate(req.body.new_email)) {
+    if (!validator.isEmail(req.body.new_email)) {
       req.flash('danger', 'Your email is invalid.');
       return res.redirect('/settings/account');
     }
