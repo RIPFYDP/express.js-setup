@@ -130,4 +130,37 @@ describe('/settings', function() {
     });
   });
 
+  it('deactivate account', function(done) {
+    var options = {
+      username: faker.internet.userName(),
+      email:    faker.internet.email(),
+      password: faker.internet.password()
+    };
+    var newEmail = faker.internet.email();
+    var user = new User(options);
+
+    user.signUp()
+    .then(function(docs) {
+      nightmare.goto('http://localhost:3001/sign_in')
+      .type('input[name="usernameEmail"]', options.email)
+      .type('input[name="password"]', options.password)
+      .click('button.btn.btn-default')
+      .wait('.alert-message')
+
+      .goto('http://localhost:3001/settings/account')
+      .url(function(url) {
+        expect(url).to.equal('http://localhost:3001/settings/account');
+      })
+      .type('input[name="email"]', options.email)
+      .click('.deactivate-account button.btn.btn-default')
+      .wait('.alert-message')
+      .evaluate(function() {
+        return document.querySelector('.alert-message').innerText;
+      }, function(text) {
+        expect(text).to.equal('Sorry to see you go. We deactivated your account.');
+      })
+      .run(done);
+    });
+  });
+
 });

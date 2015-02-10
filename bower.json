@@ -1,0 +1,13 @@
+{
+  "name": "express-js-setup",
+  "version": "0.0.0",
+  "homepage": "https://github.com/RIPFYDP/express.js-setup",
+  "authors": [
+    "Jason Kim <iamjsonkim@gmail.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "bootstrap": "~3.3.2"
+  }
+}

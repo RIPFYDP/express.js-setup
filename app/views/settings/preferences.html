@@ -12,10 +12,15 @@
     <h1>Preferences</h1>
 
     <h2>Email notifications</h2>
-    <form action="settings/post_preferences_email_notifications" method="POST">
+    <form action="/settings/post_account_email_preference" method="POST">
       <div class="checkbox">
         <label>
-          <input type="checkbox" name="get_emails"> Get occasional emails about useful information
+          <input type="checkbox" name="get_emails"
+            {% if currentUser.get_emails %}
+              checked
+            {% endif %}
+          >
+          Get occasional emails about useful information
         </label>
       </div>
 

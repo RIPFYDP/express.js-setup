@@ -29,5 +29,6 @@ router.post('/settings/post_profile', sessionHelper.isAuthenticated, settingsCon
 router.post('/settings/post_account_password', sessionHelper.isAuthenticated, settingsController.postAccountPassword);
 router.post('/settings/post_account_email', sessionHelper.isAuthenticated, settingsController.postAccountEmail);
 router.post('/settings/post_account_deactivate', sessionHelper.isAuthenticated, settingsController.postAccountDeactivate);
+router.post('/settings/post_account_email_preference', sessionHelper.isAuthenticated, settingsController.postAccountEmailPreference);
 
 module.exports = router;

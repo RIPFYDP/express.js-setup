@@ -168,4 +168,54 @@ describe('app/models/user', function() {
     );
   });
 
+  it('#selfUpdate', function(done) {
+    var options = {
+      username: faker.internet.userName(),
+      email:    faker.internet.email(),
+      password: faker.internet.password()
+    };
+    var user = new User(options);
+    var newEmail = faker.internet.email();
+
+    user.signUp()
+    .then(function(docs) {
+      return docs.selfUpdate({email: newEmail});
+    })
+    .then(
+      function(docs) {
+        expect(globalLibrary.currentUser.email).to.equal(newEmail);
+        done();
+      },
+      function(err) {
+        assert.equal(null, err);
+        done();
+      }
+    );
+
+  });
+
+  it('#destroy', function(done) {
+    var options = {
+      username: faker.internet.userName(),
+      email:    faker.internet.email(),
+      password: faker.internet.password()
+    };
+    var user = new User(options);
+
+    user.signUp()
+    .then(function(docs) {
+      return docs.destroy();
+    })
+    .then(
+      function(docs) {
+        expect(docs.result.ok).to.equal(1);
+        done();
+      },
+      function(err) {
+        assert.equal(null, err);
+        done();
+      }
+    );
+  });
+
 });

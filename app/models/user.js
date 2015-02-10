@@ -140,6 +140,28 @@ User.prototype.update = function(options) {
       deferred.reject(new Error(err));
     } else {
       user = new User(item.value);
+      deferred.resolve(user);
+    }
+  });
+
+  return deferred.promise;
+};
+
+// Update currentUser instance
+// Similar to User#update(), but updates globalLibrary.currentUser
+User.prototype.selfUpdate = function(options) {
+  var self = this,
+      deferred = Q.defer();
+
+  globalLibrary.db.collection('users')
+    .findOneAndUpdate({_id: self._id}, {$set: options}, {returnOriginal: false}, function(err, item) {
+    var user;
+
+    if (err) {
+      deferred.reject(new Error(err));
+    } else {
+
+      user = new User(item.value);
       globalLibrary.currentUser = user;
       deferred.resolve(user);
     }
@@ -148,6 +170,7 @@ User.prototype.update = function(options) {
   return deferred.promise;
 };
 
+// Update currentUser password
 User.prototype.updatePassword = function(options) {
   var self = this,
       deferred = Q.defer();
@@ -172,6 +195,23 @@ User.prototype.updatePassword = function(options) {
       }
 
     });
+  });
+
+  return deferred.promise;
+};
+
+User.prototype.destroy = function(options) {
+  var self = this,
+      deferred = Q.defer();
+
+  globalLibrary.db.collection('users').deleteOne({email: self.email}, function(err, items) {
+    var bool;
+
+    if (err) {
+      deferred.reject(new Error(err));
+    } else {
+      deferred.resolve(items);
+    }
   });
 
   return deferred.promise;

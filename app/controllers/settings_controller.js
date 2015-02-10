@@ -26,7 +26,8 @@ var settingsController = {
   preferences: function(req, res) {
     var options = {
       title: 'Settings - Preferences',
-      liActive: 'preferences'
+      liActive: 'preferences',
+      currentUser: globalLibrary.currentUser
     };
 
     res.render('settings/preferences', options);
@@ -37,11 +38,12 @@ var settingsController = {
     .then(
       function(user) {
         user = new User(user);
-        return user.update({fullname: req.body.fullname});
+        return user.selfUpdate({fullname: req.body.fullname});
       }
     )
     .then(
       function(user) {
+        globalLibrary.currentUser = user;
         req.flash('success', 'Success! Updated the profile.');
         return res.redirect('/settings');
       }
@@ -61,6 +63,7 @@ var settingsController = {
         user.updatePassword({password: req.body.new_password})
         .then(
           function(user) {
+            globalLibrary.currentUser = user;
             req.flash('success', 'Success! Updated the password.');
             return res.redirect('/settings/account');
           },
@@ -84,9 +87,10 @@ var settingsController = {
       return res.redirect('/settings/account');
     }
 
-    user.update({email: req.body.new_email})
+    user.selfUpdate({email: req.body.new_email})
     .then(
       function(user) {
+        globalLibrary.currentUser = user;
         req.flash('success', 'Success! Updated the email.');
         return res.redirect('/settings/account');
       },
@@ -98,7 +102,43 @@ var settingsController = {
   },
 
   postAccountDeactivate: function(req, res) {
+    var user = globalLibrary.currentUser;
 
+    if (user.email !== req.body.email) {
+      req.flash('danger', 'You email is incorrect.');
+      return res.redirect('/settings/account');
+    }
+
+    user.destroy()
+    .then(
+      function() {
+        req.logout();
+        globalLibrary.currentUser = {};
+        req.flash('success', 'Sorry to see you go. We deactivated your account.');
+        return res.redirect('/');
+      },
+      function(err) {
+        req.flash('danger', 'Sorry, we couldn\'t deactivate your account.');
+        return res.redirect('/settings/account');
+      }
+    );
+  },
+
+  postAccountEmailPreference: function(req, res) {
+    var user = globalLibrary.currentUser;
+
+    user.selfUpdate({get_emails: req.body.get_emails})
+    .then(
+      function(user) {
+        globalLibrary.currentUser = user;
+        req.flash('success', 'Success! Updated the email preference.');
+        return res.redirect('/settings/preferences');
+      },
+      function(err) {
+        req.flash('danger', 'Sorry, we couldn\'t update your email preference.');
+        return res.redirect('/settings/preferences');
+      }
+    );
   }
 };
 

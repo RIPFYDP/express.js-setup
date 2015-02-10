@@ -127,8 +127,16 @@ var usersController = {
     )
     .then(
       function(docs) {
-        req.flash('success', 'Thank you for signing up, ' + docs.username);
-        return res.redirect('/');
+        req.logIn(docs, function(err) {
+
+          if (err) {
+            return next(err);
+          }
+
+          req.flash('success', 'Thank you for signing up, ' + docs.username);
+          return res.redirect('/');
+        });
+
       },
       function(error) {
         req.flash('danger', 'Sorry, ' + user.email + ' is already used to sign up.');
