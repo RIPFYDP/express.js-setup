@@ -4,6 +4,7 @@ var Q             = require('q'),
     bcrypt        = require('bcrypt'),
     globalLibrary = require('../../config/application/global_library'),
     validator     = require('validator'),
+    is            = require('is'),
     users,
     User;
 
@@ -12,6 +13,76 @@ User = function(options) {
 };
 
 // Class methods
+
+User.fields = [
+  'email',
+  'username',
+  'fullname',
+  'password',
+  'get_emails'
+];
+
+User.validate = function(options, callback) {
+  var fieldsConcern = Object.keys(options);
+  var errors = {};
+  var hasError = false;
+
+  _.each(fieldsConcern, function(attribute) {
+    var value = options[attribute];
+
+    switch(attribute) {
+      case 'email':
+        errors.email = [];
+        if (!validator.isEmail(value)) {
+          hasError = true;
+          errors.email.push("Invalid email address.")
+        }
+        break;
+      case 'username':
+        errors.username = [];
+        if (!validator.isLength(value, 3, 20)) {
+          hasError = true;
+          errors.username.push('Username should be between 3 to 20 characters long');
+        }
+        if (!validator.matches(value, /^[a-zA-Z0-9_]+$/)) {
+          hasError = true;
+          errors.username.push('Username should only contain alphanumeric chracters and _');
+        }
+        break;
+      case 'fullname':
+        errors.fullname = [];
+        if (!validator.isLength(value, 3, 250)) {
+          hasError = true;
+          errors.fullname.push('Name should be between 3 to 250 characters long');
+        }
+        if (!validator.matches(value, /^[a-zA-Z ]+$/)) {
+          hasError = true;
+          errors.fullname.push('Name should only contain alphabets');
+        }
+        break;
+      case 'password':
+        errors.password = [];
+        if (!validator.isLength(value, 6)) {
+          hasError = true;
+          errors.password.push('Password should be between 3 to 250 characters long');
+        }
+        break;
+      case 'get_emails':
+        errors.get_emails = [];
+        if (!is.boolean(value)) {
+          hasError = true;
+          errors.get_emails.push('Invalid email preference error.');
+        }
+        break;
+    }
+  });
+
+  if (hasError) {
+    callback(errors);
+  }
+
+  callback(null, true);
+};
 
 // Return all users in an array.
 User.all = function() {

@@ -28,6 +28,68 @@ before(function(done) {
 
 describe('app/models/user', function() {
 
+  describe('.validate', function() {
+    it('email', function() {
+      var options = {
+        email: faker.internet.email()
+      };
+      var user = new User(options);
+
+      User.validate(user, function(err, boolean) {
+        expect(err).to.equal(null);
+        expect(boolean).to.equal(true);
+      });
+    });
+
+    it('username', function() {
+      var options = {
+        username: faker.name.firstName() + '_' + faker.name.lastName()
+      };
+      var user = new User(options);
+
+      User.validate(user, function(err, boolean) {
+        expect(err).to.equal(null);
+        expect(boolean).to.equal(true);
+      });
+    });
+
+    it('fullname', function() {
+      var options = {
+        fullname: faker.name.firstName() + ' ' + faker.name.lastName()
+      };
+      var user = new User(options);
+
+      User.validate(user, function(err, boolean) {
+        expect(err).to.equal(null);
+        expect(boolean).to.equal(true);
+      });
+    });
+
+    it('password', function() {
+      var options = {
+        password: faker.internet.password()
+      };
+      var user = new User(options);
+
+      User.validate(user, function(err, boolean) {
+        expect(err).to.equal(null);
+        expect(boolean).to.equal(true);
+      });
+    });
+
+    it('get_emails', function() {
+      var options = {
+        get_emails: true
+      };
+      var user = new User(options);
+
+      User.validate(user, function(err, boolean) {
+        expect(err).to.equal(null);
+        expect(boolean).to.equal(true);
+      });
+    });
+  });
+
   it('.all', function(done) {
     User.all()
     .then(
