@@ -248,16 +248,61 @@ User.prototype.update = function(options) {
   var self = this,
       deferred = Q.defer();
 
-  globalLibrary.db.collection('users')
-    .findOneAndUpdate({_id: self._id}, {$set: options}, {returnOriginal: false}, function(err, item) {
+  if (!_.isEmpty(options.email)) {
+    User.validate(self, function(err, bool) {
+      if(err) {
+        return deferred.reject(err);
+      }
 
-    if (err) {
-      deferred.reject(new Error(err));
-    } else {
-      user = new User(item.value);
-      deferred.resolve(user);
-    }
-  });
+      globalLibrary.db.collection('users')
+        .findOneAndUpdate({_id: self._id}, {$set: options}, {returnOriginal: false}, function(err, item) {
+
+        if (err) {
+          deferred.reject(new Error(err));
+        } else {
+          user = new User(item.value);
+          deferred.resolve(user);
+        }
+      });
+    });
+
+  } else {
+    User.find({ email: options.email })
+    .then(
+      function(docs) {
+        if (!_.isEmpty(docs)) {
+          throw {
+            email: ['Sorry, ' + options.email + ' is already used by a user.']
+          };
+        }
+
+        User.validate(options, function(err, callback) {
+
+          if (err) {
+            return deferred.reject(new Error(err));
+          }
+
+          globalLibrary.db.collection('users')
+            .findOneAndUpdate({_id: self._id}, {$set: options}, {returnOriginal: false}, function(err, item) {
+
+            if (err) {
+              deferred.reject(new Error(err));
+            } else {
+              user = new User(item.value);
+              deferred.resolve(user);
+            }
+          });
+        });
+      }
+    )
+    .fail(
+      function(err) {
+        deferred.reject(err);
+      }
+    );
+  }
+
+
 
   return deferred.promise;
 };
