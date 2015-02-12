@@ -8,7 +8,7 @@ var app       = require('../../../../app'),
     nightmare;
 
 describe('/settings', function() {
-  this.timeout(80000);
+  this.timeout(100000);
 
   before(function(done) {
     server = app.listen(3001);
