@@ -98,33 +98,7 @@ var usersController = {
       password: req.body.password
     });
 
-    User.find({username: user.username})
-    .then(
-      function(docs) {
-
-        if (_.isEmpty(docs)) {
-          return User.find({email: user.email});
-        } else {
-          throw new Error();
-        }
-      },
-      function(error) {
-      }
-    )
-    .then(
-      function(docs) {
-
-        if (_.isEmpty(docs)) {
-          return user.signUp();
-        } else {
-          throw new Error();
-        }
-      },
-      function(error) {
-        req.flash('danger', 'Sorry, the username, ' + user.username + ' is already taken.');
-        return res.redirect('/sign_up');
-      }
-    )
+    user.signUp()
     .then(
       function(docs) {
         req.logIn(docs, function(err) {
@@ -133,20 +107,15 @@ var usersController = {
             return next(err);
           }
 
-          req.flash('success', 'Thank you for signing up, ' + docs.username);
+          req.flash('success', 'Thank you for signing up, ' + docs.username + '.');
           return res.redirect('/');
         });
-
       },
-      function(error) {
-        req.flash('danger', 'Sorry, ' + user.email + ' is already used to sign up.');
+      function(err) {
+        req.flash('danger', err);
         return res.redirect('/sign_up');
       }
-    )
-    .fail(function (error) {
-      // TODO: Error handling
-    });
-
+    );
   },
 
   signOut: function(req, res) {

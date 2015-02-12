@@ -28,7 +28,7 @@ describe('/sign_up', function() {
   it('title', function(done) {
     nightmare.goto('http://localhost:3001/sign_up')
     .evaluate(function() {
-      return document.querySelector('title').innerText;
+      return document.querySelector('title').innerText.trim();
     }, function(text) {
       expect(text).to.equal('Sign up');
     })
@@ -46,10 +46,10 @@ describe('/sign_up', function() {
     .wait('.alert-message')
     .evaluate(
       function() {
-        return document.querySelector('.alert-message').innerText;
+        return document.querySelector('.alert-message').innerText.trim();
       },
       function(text) {
-        expect(text).to.equal('Thank you for signing up, ' + username);
+        expect(text).to.equal('Thank you for signing up, ' + username + '.');
       }
     )
     .run(done);
@@ -69,7 +69,7 @@ describe('/sign_up', function() {
       .wait('.alert-message')
       .evaluate(
         function() {
-          return document.querySelector('.alert-message').innerText;
+          return document.querySelector('.alert-message').innerText.trim();
         },
         function(text) {
           expect(text).to.equal('Sorry, the username, ' + username + ' is already taken.');
@@ -93,7 +93,7 @@ describe('/sign_up', function() {
       .wait('.alert-message')
       .evaluate(
         function() {
-          return document.querySelector('.alert-message').innerText;
+          return document.querySelector('.alert-message').innerText.trim();
         },
         function(text) {
           expect(text).to.equal('Sorry, ' + email + ' is already used to sign up.');

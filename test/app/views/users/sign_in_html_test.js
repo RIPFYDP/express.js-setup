@@ -27,7 +27,7 @@ describe('/sign_in', function() {
   it('title', function(done) {
     nightmare.goto('http://localhost:3001/sign_in')
     .evaluate(function() {
-      return document.querySelector('title').innerText;
+      return document.querySelector('title').innerText.trim();
     }, function(text) {
       expect(text).to.equal('Sign in');
     })
@@ -51,7 +51,7 @@ describe('/sign_in', function() {
       .wait('.alert-message')
       .evaluate(
         function() {
-          return document.querySelector('.alert-message').innerText;
+          return document.querySelector('.alert-message').innerText.trim();
         },
         function(text) {
           expect(text).to.equal('Welcome, ' + options.username + '!');
@@ -78,7 +78,7 @@ describe('/sign_in', function() {
       .wait('.alert-message')
       .evaluate(
         function() {
-          return document.querySelector('.alert-message').innerText;
+          return document.querySelector('.alert-message').innerText.trim();
         },
         function(text) {
           expect(text).to.equal('Invalid password.');
@@ -105,7 +105,7 @@ describe('/sign_in', function() {
       .wait('.alert-message')
       .evaluate(
         function() {
-          return document.querySelector('.alert-message').innerText;
+          return document.querySelector('.alert-message').innerText.trim();
         },
         function(text) {
           expect(text).to.equal('Email not found.');
@@ -133,7 +133,7 @@ describe('/sign_in', function() {
       .wait('.alert-message')
       .evaluate(
         function() {
-          return document.querySelector('.alert-message').innerText;
+          return document.querySelector('.alert-message').innerText.trim();
         },
         function(text) {
           expect(text).to.equal('Welcome, ' + options.username + '!');
@@ -160,7 +160,7 @@ describe('/sign_in', function() {
       .wait('.alert-message')
       .evaluate(
         function() {
-          return document.querySelector('.alert-message').innerText;
+          return document.querySelector('.alert-message').innerText.trim();
         },
         function(text) {
           expect(text).to.equal('Invalid password.');
@@ -187,7 +187,7 @@ describe('/sign_in', function() {
       .wait('.alert-message')
       .evaluate(
         function() {
-          return document.querySelector('.alert-message').innerText;
+          return document.querySelector('.alert-message').innerText.trim();
         },
         function(text) {
           expect(text).to.equal('User not found.');
@@ -201,7 +201,7 @@ describe('/sign_in', function() {
     nightmare.goto('http://localhost:3001/sign_in')
     .evaluate(
       function() {
-        return document.querySelector('.forgot-password').innerText;
+        return document.querySelector('.forgot-password').innerText.trim();
       },
       function(text) {
         expect(text).to.equal('Forgot password?');
@@ -239,7 +239,7 @@ describe('/sign_in', function() {
       .wait('.sign-in')
       .evaluate(
         function() {
-          return document.querySelector('.alert-message').innerText;
+          return document.querySelector('.alert-message').innerText.trim();
         },
         function(text) {
           expect(text).to.equal('Signed out successfully.');

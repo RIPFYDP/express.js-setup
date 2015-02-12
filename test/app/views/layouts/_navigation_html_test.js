@@ -30,7 +30,7 @@ describe('navigation', function() {
     .wait('.alert-message')
     .evaluate(
       function() {
-        return document.querySelector('.alert-message').innerText;
+        return document.querySelector('.alert-message').innerText.trim();
       },
       function(text) {
         expect(text).to.equal('Signed out successfully.');
@@ -68,7 +68,7 @@ describe('navigation', function() {
       .wait('.alert-message')
       .evaluate(
         function() {
-          return document.querySelector('.alert-message').innerText;
+          return document.querySelector('.alert-message').innerText.trim();
         },
         function(text) {
           expect(text).to.equal('Welcome, ' + options.username + '!');

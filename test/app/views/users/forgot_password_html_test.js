@@ -28,7 +28,7 @@ describe('/forgot_password', function() {
     nightmare.goto('http://localhost:3001/forgot_password')
     .evaluate(
       function() {
-        return document.querySelector('title').innerText;
+        return document.querySelector('title').innerText.trim();
       },
       function(text) {
         expect(text).to.equal('Forgot password');

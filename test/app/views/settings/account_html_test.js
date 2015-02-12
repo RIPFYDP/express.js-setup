@@ -53,7 +53,7 @@ describe('/settings', function() {
         expect(url).to.equal('http://localhost:3001/settings/account');
       })
       .evaluate(function() {
-        return document.querySelector('title').innerText;
+        return document.querySelector('title').innerText.trim();
       }, function(text) {
         expect(text).to.equal('Settings - Account settings');
       })
@@ -88,7 +88,7 @@ describe('/settings', function() {
       .click('.change-password button.btn.btn-default')
       .wait('.alert-message')
       .evaluate(function() {
-        return document.querySelector('.alert-message').innerText;
+        return document.querySelector('.alert-message').innerText.trim();
       }, function(text) {
         expect(text).to.equal('Success! Updated the password.');
       })
@@ -122,7 +122,7 @@ describe('/settings', function() {
       .click('.change-email button.btn.btn-default')
       .wait('.alert-message')
       .evaluate(function() {
-        return document.querySelector('.alert-message').innerText;
+        return document.querySelector('.alert-message').innerText.trim();
       }, function(text) {
         expect(text).to.equal('Success! Updated the email.');
       })
@@ -155,7 +155,7 @@ describe('/settings', function() {
       .click('.deactivate-account button.btn.btn-default')
       .wait('.alert-message')
       .evaluate(function() {
-        return document.querySelector('.alert-message').innerText;
+        return document.querySelector('.alert-message').innerText.trim();
       }, function(text) {
         expect(text).to.equal('Sorry to see you go. We deactivated your account.');
       })

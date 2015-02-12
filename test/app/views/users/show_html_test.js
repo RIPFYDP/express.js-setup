@@ -27,9 +27,9 @@ describe('/user/username', function() {
 
   it('title', function(done) {
     var user = new User({
-      username: faker.internet.username,
-      email: faker.internet.email,
-      password: faker.internet.password
+      username: faker.internet.userName(),
+      email: faker.internet.email(),
+      password: faker.internet.password()
     });
 
     user.save()

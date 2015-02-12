@@ -5,6 +5,7 @@ var express        = require('express'),
     cookieParser   = require('cookie-parser'),
     bodyParser     = require('body-parser'),
     swig           = require('swig'),
+    swigHelper     = require('./config/application/swig_helper'),
     mongoConnector = require('./config/db/mongo_connector'),
     passport       = require('passport'),
     flash          = require('flash'),
@@ -21,7 +22,7 @@ app.set('view engine', 'html');
 // that and use Express's caching instead, if you like:
 app.set('view cache', false);
 // To disable Swig's cache, do the following:
-swig.setDefaults({ cache: false });
+swigHelper.setup(swig);
 // NOTE: You should always cache templates in a production environment.
 // Don't leave both of these to `false` in production!
 

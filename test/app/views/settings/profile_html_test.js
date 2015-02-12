@@ -53,7 +53,7 @@ describe('/settings', function() {
         expect(url).to.equal('http://localhost:3001/settings');
       })
       .evaluate(function() {
-        return document.querySelector('title').innerText;
+        return document.querySelector('title').innerText.trim();
       }, function(text) {
         expect(text).to.equal('Settings - Profile');
       })
@@ -87,7 +87,7 @@ describe('/settings', function() {
       .click('button.btn.btn-default')
       .wait('.alert-message')
       .evaluate(function() {
-        return document.querySelector('.alert-message').innerText;
+        return document.querySelector('.alert-message').innerText.trim();
       }, function(text) {
         expect(text).to.equal('Success! Updated the profile.');
       })

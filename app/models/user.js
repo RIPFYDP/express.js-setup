@@ -22,49 +22,50 @@ User.fields = [
   'get_emails'
 ];
 
-User.validate = function(options, callback) {
-  var fieldsConcern = Object.keys(options);
+User.validate = function(data, callback) {
+
+  var fieldsConcern = Object.keys(data);
   var errors = {};
   var hasError = false;
 
   _.each(fieldsConcern, function(attribute) {
-    var value = options[attribute];
+    var value = data[attribute];
 
     switch(attribute) {
       case 'email':
         errors.email = [];
         if (!validator.isEmail(value)) {
           hasError = true;
-          errors.email.push("Invalid email address.")
+          errors.email.push("Invalid email address.");
         }
         break;
       case 'username':
         errors.username = [];
         if (!validator.isLength(value, 3, 20)) {
           hasError = true;
-          errors.username.push('Username should be between 3 to 20 characters long');
+          errors.username.push('Username should be between 3 to 20 characters long.');
         }
-        if (!validator.matches(value, /^[a-zA-Z0-9_]+$/)) {
+        if (!validator.matches(value, /^[a-zA-Z0-9_\.]+$/)) {
           hasError = true;
-          errors.username.push('Username should only contain alphanumeric chracters and _');
+          errors.username.push('Username should only contain alphanumeric chracters, period and _.');
         }
         break;
       case 'fullname':
         errors.fullname = [];
         if (!validator.isLength(value, 3, 250)) {
           hasError = true;
-          errors.fullname.push('Name should be between 3 to 250 characters long');
+          errors.fullname.push('Name should be between 3 to 250 characters long.');
         }
         if (!validator.matches(value, /^[a-zA-Z ]+$/)) {
           hasError = true;
-          errors.fullname.push('Name should only contain alphabets');
+          errors.fullname.push('Name should only contain alphabets.');
         }
         break;
       case 'password':
         errors.password = [];
-        if (!validator.isLength(value, 6)) {
+        if (!validator.isLength(value, 6, 64)) {
           hasError = true;
-          errors.password.push('Password should be between 3 to 250 characters long');
+          errors.password.push('Password should be between 6 to 64 characters long.');
         }
         break;
       case 'get_emails':
@@ -145,16 +146,50 @@ User.prototype.save = function() {
 
   attributa.assign(options, this);
 
-  globalLibrary.db.collection('users').insertOne(options, function(err, items) {
-    var user;
+  User.find({ email: options.email })
+  .then(
+    function(docs) {
+      if (!_.isEmpty(docs)) {
+        throw {
+          email: ['Sorry, ' + options.email + ' is already used to sign up.']
+        };
+      }
 
-    if (err) {
-      deferred.reject(new Error(err));
-    } else {
-      user = new User(items.ops[0]);
-      deferred.resolve(user);
+      return User.find({ username: options.username });
     }
-  });
+  )
+  .then(
+    function(docs) {
+      if (!_.isEmpty(docs)) {
+        throw {
+          username: ['Sorry, the username, ' + options.username + ' is already taken.']
+        };
+      }
+
+      User.validate(options, function(err, callback) {
+
+        if (err) {
+          return deferred.reject(new Error(err));
+        }
+
+        globalLibrary.db.collection('users').insertOne(options, function(err, items) {
+          var user;
+
+          if (err) {
+            deferred.reject(new Error(err));
+          } else {
+            user = new User(items.ops[0]);
+            deferred.resolve(user);
+          }
+        });
+      });
+    }
+  )
+  .fail(
+    function(err) {
+      deferred.reject(err);
+    }
+  );
 
   return deferred.promise;
 };
@@ -164,12 +199,21 @@ User.prototype.signUp = function() {
       options  = {},
       self     = this;
 
-  bcrypt.genSalt(12, function(err, salt) {
-    bcrypt.hash(self.password, salt, function(err, hash) {
+  User.validate(self, function(err, bool) {
+    if(err) {
+      return deferred.reject(err);
+    }
 
+    bcrypt.genSalt(10, function(err, salt) {
       if (err) {
-        deferred.reject(new Error(err));
-      } else {
+        return deferred.reject(err);
+      }
+
+      bcrypt.hash(self.password, salt, function(err, hash) {
+        if (err) {
+          return deferred.reject(err);
+        }
+
         self.password = hash;
 
         self.save()
@@ -178,11 +222,10 @@ User.prototype.signUp = function() {
             deferred.resolve(docs);
           },
           function(err) {
-            deferred.reject(new Error(err));
+            deferred.reject(err);
           }
         );
-      }
-
+      });
     });
   });
 
@@ -247,7 +290,7 @@ User.prototype.updatePassword = function(options) {
   var self = this,
       deferred = Q.defer();
 
-  bcrypt.genSalt(12, function(err, salt) {
+  bcrypt.genSalt(10, function(err, salt) {
     bcrypt.hash(options.password, salt, function(err, hash) {
 
       if (err) {

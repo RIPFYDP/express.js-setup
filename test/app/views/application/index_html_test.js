@@ -25,7 +25,7 @@ describe('/', function() {
   it('/', function(done) {
     nightmare.goto('http://localhost:3001')
       .evaluate(function() {
-        return document.querySelector('title').innerText;
+        return document.querySelector('title').innerText.trim();
       }, function(text) {
         expect(text).to.equal('Express MV*');
       })
