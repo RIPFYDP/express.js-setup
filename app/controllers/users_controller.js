@@ -61,6 +61,7 @@ var usersController = {
             return next(err);
           }
 
+          globalLibrary.currentUser = user;
           req.flash('success', 'Welcome, ' + user.username + '!');
           return res.redirect('/');
         });
